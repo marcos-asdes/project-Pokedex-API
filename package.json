@@ -9,6 +9,8 @@
     "ts:start": "ts-node src/server.ts",
     "build": "tsc -p tsconfig.json",
     "dev": "nodemon src/server.ts",
+    "prisma:init": "npx prisma init",
+    "format": "npx prisma format",
     "migrate": "npx prisma migrate dev",
     "studio": "npx prisma studio",
     "ts:config": "npx tsc --init",
