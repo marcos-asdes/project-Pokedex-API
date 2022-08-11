@@ -4,7 +4,7 @@ import { ObjectSchema } from 'joi'
 import { AppError } from '../events/appError.js'
 import appLog from '../events/appLog.js'
 
-export function validateSchemaMiddleware (schema: ObjectSchema) {
+export default function validateSchemaMiddleware (schema: ObjectSchema) {
   return (req: Request, res: Response, next: NextFunction) => {
     const body = req.body
     const { error } = schema.validate(body, { abortEarly: false })

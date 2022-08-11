@@ -1,7 +1,10 @@
 import bcrypt from 'bcrypt'
 import jwt, { Algorithm, SignOptions } from 'jsonwebtoken'
 
+import * as repository from '../repositories/auth.repository.js'
+
 import appLog from '../events/appLog.js'
+import { AppError } from '../events/appError.js'
 
 function hashPassword (password: string) {
   const encrypted = bcrypt.hashSync(password, +process.env.SALT)
@@ -17,9 +20,9 @@ function decryptPassword (password: string, encrypted: string) {
   return passwordIsValid
 }
 
-function generateToken (id: number) {
+function generateToken (id: string) {
   const data = {}
-  const subject = id.toString()
+  const subject = id
   const secretKey = process.env.JWT_SECRET
   const expiresIn = process.env.JWT_EXPIRES_IN
 
@@ -32,4 +35,18 @@ function generateToken (id: number) {
   return token
 }
 
-export { hashPassword, decryptPassword, generateToken }
+async function findUserById(id: string) {
+  const user = await repository.findById(id);
+  if (!user) {
+    throw new AppError(
+      'User not found',
+      404,
+      'User not found',
+      'Critical Failure: The provided userId is not related to any user',
+    );
+  };
+
+  return user;
+}
+
+export { hashPassword, decryptPassword, generateToken, findUserById }

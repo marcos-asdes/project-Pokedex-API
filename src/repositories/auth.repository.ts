@@ -8,4 +8,8 @@ async function registerUser (data: any) {
   return await client.user.create({ data })
 }
 
-export { findByEmail, registerUser }
+async function findById (id: string) {
+  return client.user.findUnique({where: { id }});
+}
+
+export { findByEmail, registerUser, findById }
