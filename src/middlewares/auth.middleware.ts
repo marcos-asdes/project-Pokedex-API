@@ -6,12 +6,6 @@ import appLog from '../events/appLog.js'
 import * as repository from '../repositories/auth.repository.js'
 import * as service from '../services/auth.service.js'
 
-/* export type userProperties = {
-  id: number;
-  email: string;
-  password: string;
-} */
-
 async function checkIfDataIsAlreadyRegistered (_req: Request, res: Response, next: NextFunction) {
   const body = res.locals.body
   const { email } = body

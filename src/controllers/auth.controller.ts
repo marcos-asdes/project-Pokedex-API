@@ -19,13 +19,13 @@ async function registerUser (_req: Request, res: Response) {
   return res.sendStatus(201)
 }
 
-function loginUser (_req: Request, res: Response) {
+function loginUser (req: Request, res: Response) {
   const { user: { id } } = res.locals
 
   const token = service.generateToken(id)
-
+  req.headers = { 'Authorization': 'Bearer ' + token }
   appLog('Controller', 'User signed in')
-  return res.status(200).send({ token })
+  return res.status(200).send("System generated token")
 }
 
 export { registerUser, loginUser }
