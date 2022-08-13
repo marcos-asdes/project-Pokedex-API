@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-import { AppError } from "../events/AppError.js";
-import AppLog from "../events/AppLog.js";
+import { AppError } from "../events/appError.js";
+import appLog from "../events/appLog.js";
 
 import * as service from "../services/auth.service.js";
 
@@ -19,7 +19,7 @@ export default async function validateTokenMiddleware(req: Request, res: Respons
 
   const token = authHeader.replace("Bearer ", "");
   //const token = authHeader ? authHeader.split(" ")[1] : null;
-  //const token = tokenExists.replace('Bearer ', '').trim() ?? null;;
+  //const token = authHeader.replace('Bearer ', '').trim() ?? null;;
   if (!token) {
     throw new AppError(
       'Missing token',
@@ -29,13 +29,13 @@ export default async function validateTokenMiddleware(req: Request, res: Respons
     );
   }
 
-  let subject = null;
+  let subject = null; // subject is id
   try {
     const { sub } = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
     subject = sub;
-    const user = await service.findUserById(subject);
-    AppLog('Repository', 'User searched by id');
-    res.locals.user = user;
+    const user_data = await service.findUserById_idAsString(subject);
+    appLog('Repository', 'User searched by id');
+    res.locals.user_data = user_data;
     res.locals.subject = subject;
   } catch (error) {
     throw new AppError(
@@ -45,6 +45,6 @@ export default async function validateTokenMiddleware(req: Request, res: Respons
       error,
     );
   }
-  AppLog('Middleware', 'Valid token');
+  appLog('Middleware', 'Valid token');
   next();
 }

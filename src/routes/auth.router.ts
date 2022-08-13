@@ -11,14 +11,15 @@ const authRouter = Router()
 authRouter.post(
   '/sign-up',
   validateSchemaMiddleware(schema.RegisterUser),
-  middleware.checkIfDataIsAlreadyRegistered,
+  middleware.checkIfEmailIsAlreadyRegistered,
   controller.registerUser
 )
 
 authRouter.post(
   '/sign-in',
   validateSchemaMiddleware(schema.SignIn),
-  middleware.checkUserIsValid,
+  middleware.checkIfEmailIsValid,
+  middleware.checkIfPasswordIsValid,
   controller.loginUser
 )
 

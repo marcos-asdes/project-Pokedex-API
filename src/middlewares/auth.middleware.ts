@@ -1,57 +1,42 @@
 import { Request, Response, NextFunction } from 'express'
 
-import { AppError } from '../events/appError.js'
 import appLog from '../events/appLog.js'
 
-import * as repository from '../repositories/auth.repository.js'
 import * as service from '../services/auth.service.js'
 
-async function checkIfDataIsAlreadyRegistered (_req: Request, res: Response, next: NextFunction) {
-  const body = res.locals.body
-  const { email } = body
+// sign up middleware
+async function checkIfEmailIsAlreadyRegistered (_req: Request, res: Response, next: NextFunction) {
+  const email: string = res.locals.body.email
 
-  const data = await repository.findByEmail(email)
-  appLog('Repository', 'User searched by email')
-  if (data) {
-    throw new AppError(
-      'Email already registered',
-      409,
-      'Email already registered',
-      'Ensure to provide an email address that is not already in use'
-    )
-  }
-  appLog('Middleware', 'Email is unique')
+  await service.findUserByEmail_expectDataIsNull(email)
+
+  appLog('Middleware', 'Email is available for registration')
   next()
 }
 
-async function checkUserIsValid (_req: Request, res: Response, next: NextFunction) {
-  const body = res.locals.body
-  const { email, password } = body
+// sign in middlewares
+async function checkIfEmailIsValid (_req: Request, res: Response, next: NextFunction) {
+  const email: string = res.locals.body.email
 
-  const userAlreadyExists = await repository.findByEmail(email)
-  if (!userAlreadyExists) {
-    throw new AppError(
-      'User not found',
-      401,
-      'User not found',
-      'Ensure to provide a valid email address'
-    )
-  }
-  appLog('Middleware', 'User exists')
+  const user_data = await service.findUserByEmail_expectDataIsntNull(email)
 
-  const passwordIsValid = service.decryptPassword(password, userAlreadyExists?.password)
-  if (!passwordIsValid) {
-    throw new AppError(
-      'Invalid password',
-      401,
-      'Invalid password',
-      'Ensure to provide a valid password'
-    )
-  }
-  appLog('Middleware', 'Valid password')
-
-  res.locals.user = userAlreadyExists
-  return next()
+  res.locals.user_data = user_data
+  appLog('Middleware', 'Valid email')
+  next()
 }
 
-export { checkIfDataIsAlreadyRegistered, checkUserIsValid }
+async function checkIfPasswordIsValid (_req: Request, res: Response, next: NextFunction) {
+  const { password } = res.locals.body
+  const { user_data } = res.locals
+
+  service.passwordIsValid(password, user_data?.password)
+
+  appLog('Middleware', 'Valid password')
+  next()
+}
+
+export { 
+  checkIfEmailIsAlreadyRegistered, 
+  checkIfEmailIsValid, 
+  checkIfPasswordIsValid 
+}
