@@ -2,26 +2,26 @@ import { Request, Response } from 'express'
 
 import appLog from '../events/appLog.js'
 
-import * as repository from '../repositories/pokemons.repository.js'
+import * as service from '../services/pokemons.service.js'
 
 async function getPokemons (_req: Request, res: Response) {
-  const getAllPokemons = await repository.getAllPokemons()
-  appLog('Repository', 'Database response successful')
+  const data = await service.getAllPokemons()
 
   appLog('Controller', 'Successfully obtained pokemons')
-  return res.status(200).send(getAllPokemons)
+  return res.status(200).send(data)
 }
 
 async function postPokemonInUserCollection (_req: Request, res: Response) {
-  const data = res.locals.data
+  const { id } = res.locals.pokemon_data
+  const { subject } = res.locals
 
-  await repository.addPokemonInUserCollection(data)
-  appLog('Repository', 'Pokemon added successfully')
+  await service.addPokemon(id, subject)
 
-  appLog('Controller', 'Completed post')
+  appLog('Controller', 'Pokemon added to users collection successfully')
   return res.sendStatus(200)
 }
 
-export { postPokemonInUserCollection }
-
-export { getPokemons }
+export { 
+  getPokemons, 
+  postPokemonInUserCollection 
+}

@@ -24,4 +24,7 @@ function loginUser (req: Request, res: Response) {
   return res.status(200).send("System generated token")
 }
 
-export { registerUser, loginUser }
+export { 
+  registerUser, 
+  loginUser 
+}

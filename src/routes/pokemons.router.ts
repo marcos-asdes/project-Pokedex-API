@@ -17,7 +17,7 @@ pokemonsRouter.post(
   '/my-pokemons/:id/add',
   validateTokenMiddleware,
   middleware.checkIfPokemonExists,
-  // checar se o pokemon já não está adicionado
+  middleware.checkIfPokemonsIsAlreadyInCollection,
   controller.postPokemonInUserCollection
 )
 

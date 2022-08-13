@@ -34,7 +34,6 @@ export default async function validateTokenMiddleware(req: Request, res: Respons
     const { sub } = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
     subject = sub;
     const user_data = await service.findUserById_idAsString(subject);
-    appLog('Repository', 'User searched by id');
     res.locals.user_data = user_data;
     res.locals.subject = subject;
   } catch (error) {

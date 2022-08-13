@@ -1,25 +1,30 @@
 import { NextFunction, Request, Response } from 'express'
 
-import { AppError } from "../events/AppError.js";
-import appLog from "../events/appLog.js";
+import appLog from '../events/appLog.js';
 
-import * as repository from '../repositories/pokemons.repository.js'
+import * as service from '../services/pokemons.service.js'
 
 async function checkIfPokemonExists (req: Request, res: Response, next: NextFunction) {
-  let { id } = req.params
-  const data =  await repository.findByIdNumber(Number(id))
-  appLog('Repository', 'Repository accessed successfully')
-  if (!data) {
-    throw new AppError(
-      'Pokemon does not exist in database',
-      404,
-      'Pokemon does not exist in database',
-      'Enter a valid pokemon id'
-    )
-  }
-  res.locals.data = data;
+  const { id } = req.params
+  const pokemonId = Number(id)
+
+  const pokemon_data = await service.findPokemonByIdNumber(pokemonId)
+
+  res.locals.pokemon_data = pokemon_data;
   appLog('Middleware', 'Pokemon exists in database')
   next()
 }
 
-export { checkIfPokemonExists }
+async function checkIfPokemonsIsAlreadyInCollection (_req: Request, res: Response, next: NextFunction) {
+  const { id } = res.locals.pokemon_data
+  const { subject } = res.locals // user id
+
+  await service.checkIfPokemonsIsAlreadyInUserCollection(id, subject)
+  appLog('Middleware', 'Pokemon does not exist in user collection')
+  next()
+}
+
+export { 
+  checkIfPokemonExists, 
+  checkIfPokemonsIsAlreadyInCollection 
+}

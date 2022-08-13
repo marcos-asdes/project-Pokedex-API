@@ -74,7 +74,7 @@ async function findUserByEmail_expectDataIsntNull(email: string){
       'Ensure to provide a valid email address'
     );
   };
-  appLog('Service', 'Email found')
+  appLog('Service', 'Email found in database')
   return data
 }
 
@@ -109,7 +109,7 @@ async function findUserById_idAsString(id: string) {
       'Critical Failure: The provided userId is not related to any user'
     );
   };
-  appLog('Service', 'User found')
+  appLog('Service', 'User found in database')
   return data;
 }
 

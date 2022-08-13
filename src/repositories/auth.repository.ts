@@ -13,4 +13,8 @@ async function registerUser (data: CreateUser) {
   return await client.user.create({ data })
 }
 
-export { findByEmail, findByIdString, registerUser }
+export { 
+  findByEmail, 
+  findByIdString, 
+  registerUser 
+}
