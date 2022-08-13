@@ -41,12 +41,35 @@ async function checkIfPokemonsIsAlreadyInUserCollection(pokemonId: number, userI
 
 async function addPokemon(id: number, subject: string) {
   await repository.addPokemonInUserCollection(id, subject)
-  appLog('Repository', 'Pokemon added successfully')
+  appLog('Repository', 'Repository accessed successfully')
+  return appLog('Service', 'Pokemon added successfully')
+}
+
+async function checkIfPokemonsIsInUserCollection(pokemonId: number, userId: string) {
+  const data = await repository.checkIfPokemonsIsAlreadyInCollectionWithIds(pokemonId, userId)
+  appLog('Repository', 'Repository accessed successfully')
+  if (data.length===0) {
+    throw new AppError(
+      'Pokemon does not exists in user collection',
+      409,
+      'Pokemon does not exists in user collection',
+      'Remove a pokemon that exists in the collection'
+    )
+  }
+  return appLog('Service', 'Pokemon registered in user collection')
+}
+
+async function removePokemon(id: number, subject: string){
+  await repository.removePokemonFromUserCollection(id, subject)
+  appLog('Repository', 'Repository accessed successfully')
+  return appLog('Service', 'Pokemon removed successfully')
 }
 
 export { 
   findPokemonByIdNumber, 
   getAllPokemons, 
   checkIfPokemonsIsAlreadyInUserCollection, 
-  addPokemon 
+  addPokemon,
+  checkIfPokemonsIsInUserCollection,
+  removePokemon
 }

@@ -21,4 +21,12 @@ pokemonsRouter.post(
   controller.postPokemonInUserCollection
 )
 
+pokemonsRouter.post(
+  '/my-pokemons/:id/remove',
+  validateTokenMiddleware,
+  middleware.checkIfPokemonExists,
+  middleware.checkIfPokemonsIsInCollection,
+  controller.removePokemonFromUserCollection
+)
+
 export default pokemonsRouter

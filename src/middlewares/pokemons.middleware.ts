@@ -24,7 +24,17 @@ async function checkIfPokemonsIsAlreadyInCollection (_req: Request, res: Respons
   next()
 }
 
+async function checkIfPokemonsIsInCollection(_req: Request, res: Response, next: NextFunction) {
+  const { id } = res.locals.pokemon_data
+  const { subject } = res.locals // user id
+
+  await service.checkIfPokemonsIsInUserCollection(id, subject)
+  appLog('Middleware', 'Pokemon exists in user collection')
+  next()
+}
+
 export { 
   checkIfPokemonExists, 
-  checkIfPokemonsIsAlreadyInCollection 
+  checkIfPokemonsIsAlreadyInCollection,
+  checkIfPokemonsIsInCollection
 }
