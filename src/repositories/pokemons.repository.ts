@@ -4,6 +4,14 @@ async function getAllPokemonsInDatabase () {
   return await client.pokemon.findMany()
 }
 
+async function selectPokemonsInUserCollection (id: string) {
+  return await client.usersPokemons.findMany({
+    where: {
+      userId: id
+    }
+  })
+}
+
 async function findByIdNumber (id: number) {
   return await client.pokemon.findUnique({where: { id }})
 }
@@ -13,10 +21,10 @@ async function checkIfPokemonsIsAlreadyInCollectionWithIds (pokemonId: number, u
     where: {
       AND: [
         {
-          idUser: userId
+          userId: userId
         },
         {
-          idPokemon: pokemonId
+          pokemonId: pokemonId
         }
       ]
     }
@@ -27,8 +35,8 @@ async function checkIfPokemonsIsAlreadyInCollectionWithIds (pokemonId: number, u
 async function addPokemonInUserCollection (pokemonId: number, userId: string) {
   return await client.usersPokemons.create({
     data: {
-      idUser: userId,
-      idPokemon: pokemonId
+      userId: userId,
+      pokemonId: pokemonId
     }
   })
 }
@@ -43,7 +51,8 @@ async function removePokemonFromUserCollection (pokemonId: number, userId: strin
 }
 
 export { 
-  getAllPokemonsInDatabase, 
+  getAllPokemonsInDatabase,
+  selectPokemonsInUserCollection,
   findByIdNumber, 
   checkIfPokemonsIsAlreadyInCollectionWithIds,
   addPokemonInUserCollection,

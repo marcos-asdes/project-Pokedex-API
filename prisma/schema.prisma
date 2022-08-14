@@ -29,7 +29,6 @@ model Pokemon {
   height        Int
   baseExp       Int
   description   String?
-  inMyPokemons  Boolean         @default(false)
   UsersPokemons UsersPokemons[]
 
   @@map("pokemons")
@@ -37,10 +36,10 @@ model Pokemon {
 
 model UsersPokemons {
   id        Int     @unique @default(autoincrement())
-  idUser    String
-  user      User    @relation(fields: [idUser], references: [id])
-  idPokemon Int
-  pokemon   Pokemon @relation(fields: [idPokemon], references: [id])
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  pokemonId Int
+  pokemon   Pokemon @relation(fields: [pokemonId], references: [id])
 
   @@map("users_pokemons")
 }
