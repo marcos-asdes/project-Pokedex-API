@@ -5,6 +5,11 @@ import appLog from '../src/events/appLog.js'
 
 async function popPokedex() {
   const pokelist = 20
+
+  await client.$transaction([
+    client.$executeRaw`TRUNCATE pokemons CASCADE`
+  ]);
+
   for(let i=1; i<=pokelist; i++) {
     const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${i}/`
     axios.get(pokeAPI)
@@ -28,3 +33,5 @@ async function popPokedex() {
 }
 
 popPokedex()
+
+export { popPokedex }

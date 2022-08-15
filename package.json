@@ -17,7 +17,8 @@
     "migrate": "npx prisma migrate dev",
     "studio": "npx prisma studio",
     "ts:config": "npx tsc --init",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku:logs": "heroku logs --tail"
   },
   "repository": {
     "type": "git",
