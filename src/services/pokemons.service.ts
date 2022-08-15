@@ -1,4 +1,4 @@
-import { AppError } from '../events/AppError.js';
+import { AppError } from '../events/appError.js';
 import appLog from '../events/appLog.js'
 import { DataWithBoolean, DataWithoutBoolean } from '../types/types.js';
 
