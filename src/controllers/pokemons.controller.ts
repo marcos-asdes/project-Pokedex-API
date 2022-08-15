@@ -5,17 +5,8 @@ import { DataWithBoolean } from '../types/types.js'
 
 import * as service from '../services/pokemons.service.js'
 
-import client from '../config/database.js'
-import { popPokedex } from '../../prisma/seed.js'
-
 async function getPokemons (_req: Request, res: Response) {
   const subject: string = res.locals.subject // user id
-
-  // testing
-  const pokedex = await client.pokemon.findMany()
-  if(pokedex.length === 0) {
-    await popPokedex()
-  }
 
   const data = await service.getAllPokemons()
   const updated_data: DataWithBoolean[] = await service.addPokemonBooleanProp(subject, data)
