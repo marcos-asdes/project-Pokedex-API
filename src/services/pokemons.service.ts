@@ -1,5 +1,6 @@
 import { AppError } from '../events/AppError.js';
 import appLog from '../events/appLog.js'
+import { DataWithBoolean, DataWithoutBoolean } from '../types/types.js';
 
 import * as repository from '../repositories/pokemons.repository.js'
 
@@ -10,9 +11,9 @@ async function getAllPokemons() {
   return data
 }
 
-async function addPokemonBooleanProp(id: string, data: any) {
-  const dataWithBoolean = data.map((e: any) => ({...e, inMyPokemons: false}))
-  dataWithBoolean.sort((a: any, b: any) => (a.id - b.id))
+async function addPokemonBooleanProp(id: string, data: DataWithoutBoolean[]) {
+  const dataWithBoolean: DataWithBoolean[] = data.map((e) => ({...e, inMyPokemons: false}))
+  dataWithBoolean.sort((a, b) => (a.id - b.id))
   
   const pokemonsInUserCollection = await repository.selectPokemonsInUserCollection(id)
   appLog('Repository', 'Repository accessed successfully')

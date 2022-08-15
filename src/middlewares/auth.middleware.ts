@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 
 import appLog from '../events/appLog.js'
+import { User } from '../types/types.js'
 
 import * as service from '../services/auth.service.js'
 
@@ -26,8 +27,8 @@ async function checkIfEmailIsValid (_req: Request, res: Response, next: NextFunc
 }
 
 async function checkIfPasswordIsValid (_req: Request, res: Response, next: NextFunction) {
-  const { password } = res.locals.body
-  const { user_data } = res.locals
+  const password: string = res.locals.body.password
+  const user_data: User = res.locals.user_data
 
   service.passwordIsValid(password, user_data?.password)
 

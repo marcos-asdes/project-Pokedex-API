@@ -16,7 +16,7 @@ async function registerUser (_req: Request, res: Response) {
 
 // sign in controller
 function loginUser (req: Request, res: Response) {
-  const { user_data: { id } } = res.locals
+  const id: string = res.locals.user_data.id
 
   service.sendTokenToHeader(id, req)
 
