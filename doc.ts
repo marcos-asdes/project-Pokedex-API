@@ -1,4 +1,4 @@
-export const doc = `
+const doc = `
 -- Pokedex API --
 
 endpoints: 
