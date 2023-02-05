@@ -8,19 +8,19 @@ import appLog from '../events/appLog.js'
 import { AppError } from '../events/appError.js'
 import { CreateUser } from '../types/types.js'
 
-function hashPassword (password: string) {
+function hashPassword(password: string) {
   const encrypted = bcrypt.hashSync(password, +process.env.SALT)
   appLog('Service', 'Password encrypted')
   return encrypted
 }
 
-function decryptPassword (password: string, encrypted: string) {
+function decryptPassword(password: string, encrypted: string) {
   const passwordIsValid = bcrypt.compareSync(password, encrypted)
   appLog('Service', 'Password decrypted')
   return passwordIsValid
 }
 
-function generateToken (id: string) {
+function generateToken(id: string) {
   const data = {}
   const subject = id
   const secretKey = process.env.JWT_SECRET
@@ -53,7 +53,7 @@ async function findUserByEmail_expectDataIsNull(email: string) {
 
 async function registerUserInDatabase(body: CreateUser) {
   const password = hashPassword(body.password)
-  const data = { 
+  const data = {
     email: body.email,
     password: password
   }
@@ -63,7 +63,7 @@ async function registerUserInDatabase(body: CreateUser) {
 }
 
 // sign in services
-async function findUserByEmail_expectDataIsntNull(email: string){
+async function findUserByEmail_expectDataIsntNull(email: string) {
   const data = await repository.findByEmail(email);
   appLog('Repository', 'Repository accessed successfully')
   if (!data) {
@@ -94,7 +94,8 @@ function passwordIsValid(inputedPassword: string, databasePassword: string) {
 function sendTokenToHeader(id: string, req: Request) {
   const token = generateToken(id)
   req.headers = { 'Authorization': 'Bearer ' + token }
-  return appLog('Service', `Token stored in header as ${token}`)
+  appLog('Service', `Token stored in header as ${token}`)
+  return token
 }
 
 // validateTokenMiddleware service
@@ -113,11 +114,11 @@ async function findUserById_idAsString(id: string) {
   return data;
 }
 
-export { 
+export {
   findUserByEmail_expectDataIsNull,
   registerUserInDatabase,
   findUserByEmail_expectDataIsntNull,
   passwordIsValid,
-  sendTokenToHeader, 
+  sendTokenToHeader,
   findUserById_idAsString
 }

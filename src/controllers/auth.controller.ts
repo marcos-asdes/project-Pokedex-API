@@ -5,7 +5,7 @@ import appLog from '../events/appLog.js'
 import * as service from '../services/auth.service.js'
 
 // sign up controller
-async function registerUser (_req: Request, res: Response) {
+async function registerUser(_req: Request, res: Response) {
   const body = res.locals.body
 
   await service.registerUserInDatabase(body)
@@ -15,16 +15,18 @@ async function registerUser (_req: Request, res: Response) {
 }
 
 // sign in controller
-function loginUser (req: Request, res: Response) {
+function loginUser(req: Request, res: Response) {
   const id: string = res.locals.user_data.id
 
-  service.sendTokenToHeader(id, req)
+  const token = service.sendTokenToHeader(id, req)
+
+  const data = `System generated token. \n\n Token: ${token}`
 
   appLog('Controller', 'User signed in')
-  return res.status(200).send("System generated token")
+  return res.status(200).send(data)
 }
 
-export { 
-  registerUser, 
-  loginUser 
+export {
+  registerUser,
+  loginUser
 }
