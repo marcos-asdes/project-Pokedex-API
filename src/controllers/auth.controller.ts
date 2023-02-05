@@ -10,17 +10,22 @@ async function registerUser(_req: Request, res: Response) {
 
   await service.registerUserInDatabase(body)
 
+  const user = body.email
+
+  const data = `User ${user} has been registered successfully.`
+
   appLog('Controller', 'User signed up')
-  return res.sendStatus(201)
+  return res.status(201).send(data)
 }
 
 // sign in controller
 function loginUser(req: Request, res: Response) {
   const id: string = res.locals.user_data.id
+  const user: string = res.locals.user_data.email
 
   const token = service.sendTokenToHeader(id, req)
 
-  const data = `System generated token. \n\n Token: ${token}`
+  const data = `User ${user} has successfully logged in. \n\n User token: ${token}`
 
   appLog('Controller', 'User signed in')
   return res.status(200).send(data)
