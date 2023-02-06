@@ -5,7 +5,7 @@ import { DataWithBoolean } from '../types/types.js'
 
 import * as service from '../services/pokemons.service.js'
 
-async function getPokemons (_req: Request, res: Response) {
+async function getPokemons(_req: Request, res: Response) {
   const subject: string = res.locals.subject // user id
 
   const data = await service.getAllPokemons()
@@ -15,28 +15,34 @@ async function getPokemons (_req: Request, res: Response) {
   return res.status(200).send(updated_data)
 }
 
-async function postPokemonInUserCollection (_req: Request, res: Response) {
+async function postPokemonInUserCollection(_req: Request, res: Response) {
   const id: number = res.locals.pokemon_data.id
   const subject: string = res.locals.subject // user id
+  const pokemon_name: string = res.locals.pokemon_data.name
 
   await service.addPokemon(id, subject)
 
+  const data = `The ${pokemon_name} has been successfully added to your Pokedex.`
+
   appLog('Controller', 'Pokemon added to users collection successfully')
-  return res.sendStatus(200)
+  return res.status(200).send(data)
 }
 
-async function removePokemonFromUserCollection (_req: Request, res: Response) {
+async function removePokemonFromUserCollection(_req: Request, res: Response) {
   const id: number = res.locals.pokemon_data.id
   const subject: string = res.locals.subject // user id
+  const pokemon_name: string = res.locals.pokemon_data.name
 
   await service.removePokemon(id, subject)
 
+  const data = `The ${pokemon_name} has been successfully removed from your Pokedex.`
+
   appLog('Controller', 'Pokemon removed from users collection successfully')
-  return res.sendStatus(200)
+  return res.status(200).send(data)
 }
 
-export { 
-  getPokemons, 
+export {
+  getPokemons,
   postPokemonInUserCollection,
   removePokemonFromUserCollection
 }
