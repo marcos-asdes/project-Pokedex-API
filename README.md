@@ -8,9 +8,6 @@
 <h1 align="center">Pokedex | Back-end</h3>
 </div>
 
-
-# Pokedex | Back-end
-
 Este projeto está em sua primeira versão, na temática do universo Pokemon, é uma API REST escrita em Typescript que retorna objetos JSON de acordo com a rota acessada, com o intuito de reproduzir algumas funcionalidades de um Pokedex.
 
 https://project-pokedex-api-production.up.railway.app/
@@ -154,7 +151,7 @@ O token de autenticação é enviado ao _header Authentication_ se o login for v
 
 ## Testes manuais
 
-Para a execução dos testes manuais é necessário o auxílio de uma extensão de testes, como por exemplo, o Insomnia, o ThunderClient, entre outras.
+Para a execução dos testes manuais é necessário o auxílio de uma extensão de testes, como por exemplo, Insomnia, ThunderClient, entre outras.
 
 De posse de uma extensão de testes é possível utilizar as rotas da API apresentadas acima. Seguindo as instruções e métodos habilitados para cada rota e completando o URL da rota com o link de deploy da API:
 
