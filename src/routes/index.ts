@@ -5,7 +5,9 @@ import pokemonsRouter from './pokemons.router.js'
 
 const router = express.Router()
 
-router.use(authRouter)
-router.use(pokemonsRouter)
+const api = '/api'
+
+router.use(api, authRouter)
+router.use(api, pokemonsRouter)
 
 export default router
