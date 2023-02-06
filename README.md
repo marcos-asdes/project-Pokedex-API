@@ -5,12 +5,10 @@
 </div>
 
 <div align="center">
-<h3 align="center">Pokedex | Back-end</h3>
-
-Projeto de Back-end
+<h1 align="center">Pokedex | Back-end</h3>
 </div>
 
-Este projeto está em sua primeira versão, na temática do universo Pokemon, é uma API REST escrita em Typescript que retorna objetos JSON de acordo com a rota acessada, com o intuito de reproduzir algumas funcionalidades de um Pokedex.
+  Este projeto está em sua primeira versão, na temática do universo Pokemon, é uma API REST escrita em Typescript que retorna objetos JSON de acordo com a rota acessada, com o intuito de reproduzir algumas funcionalidades de um Pokedex.
 
 ## Tech Stack
 
