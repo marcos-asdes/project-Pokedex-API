@@ -1,5 +1,5 @@
 {
-  "name": "projeto21r-pokedex-api",
+  "name": "projeto-pokedex-api",
   "version": "1.0.0",
   "description": "",
   "main": "dist/src/server.js",
