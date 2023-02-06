@@ -32,14 +32,21 @@ Este projeto está em sua primeira versão, na temática do universo Pokemon, é
   POST /api/sign-up
 ```
 
-#### JSON exemplo
+#### formato da requisição JSON esperada
 
 ```JSON
   { 
     "email": "ash@email.com",
-    "password": "1234568",
+    "password": "12345678",
     "confirmPassword": "12345678"
   }
+```
+
+#### resposta bem-sucedida esperada
+
+```String
+    Status Code: 201
+    User ash@gmail.com has been registered successfully.
 ```
 
 ### Logar com conta de mestre Pokemon
@@ -48,14 +55,25 @@ Este projeto está em sua primeira versão, na temática do universo Pokemon, é
   POST /api/sign-in
 ```
 
-#### JSON exemplo
+#### formato da requisição JSON esperada
 
 ```JSON
   { 
     "email": "ash@email.com",
-    "password": "1234568"
+    "password": "12345678"
   }
 ```
+
+#### resposta bem-sucedida esperada
+
+```String
+    Status Code: 200
+    User ash@gmail.com has successfully logged in.
+
+    User token: (JSON web token)
+```
+
+O token de autenticação é enviado ao _header Authentication_ se o login for válido.
 
 ### Obter todos os Pokemons do banco de dados da Pokedex
 
@@ -65,8 +83,25 @@ Este projeto está em sua primeira versão, na temática do universo Pokemon, é
 
 | Parâmetro | Tipo     | Descrição                |
 | :-------- | :------- | :------------------------- |
-| `token` | `string` | **Requerido**. Chave de usuário logado passada através do _headers_ com valor `Bearer ${token}`|
+| `token` | `string` | **Requerido**. Chave de usuário logado passada através do _header Authentication_ com valor `Bearer ${token}`|
 
+#### resposta bem-sucedida esperada
+
+```JSON
+[
+  {
+    "id": 1,
+    "name": "bulbasaur",
+    "number": 1,
+    "image": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+    "weight": 69,
+    "height": 7,
+    "baseExp": 64,
+    "description": "no description available",
+    "inMyPokemons": false
+  }, ...
+]
+```
 
 ### Adicionar um Pokemon ao Pokedex pessoal do usuário
 
@@ -76,8 +111,15 @@ Este projeto está em sua primeira versão, na temática do universo Pokemon, é
 
 | Parâmetro | Tipo     | Descrição                |
 | :-------- | :------- | :------------------------- |
-| `token` | `string` | **Requerido**. Chave de usuário logado passada através do _headers_ com valor `Bearer ${token}`|
+| `token` | `string` | **Requerido**. Chave de usuário logado passada através do _header Authentication_ com valor `Bearer ${token}`|
 | `id` | `integer` | **Requerido**. Id do Pokemon passado como _queryParams_ no lugar de `:id`|
+
+#### resposta bem-sucedida esperada
+
+```String
+    Status Code: 200
+    The (pokemon_name) has been successfully added to your Pokedex.
+```
 
 ### Remover um Pokemon do Pokedex pessoal do usuário
 
@@ -87,10 +129,15 @@ Este projeto está em sua primeira versão, na temática do universo Pokemon, é
 
 | Parâmetro | Tipo     | Descrição                |
 | :-------- | :------- | :------------------------- |
-| `token` | `string` | **Requerido**. Chave de usuário logado passada através do _headers_ com valor `Bearer ${token}`|
+| `token` | `string` | **Requerido**. Chave de usuário logado passada através do _header Authentication_ com valor `Bearer ${token}`|
 | `id` | `integer` | **Requerido**. Id do Pokemon passado como _queryParams_ no lugar de `:id`|
 
+#### resposta bem-sucedida esperada
 
+```String
+    Status Code: 200
+    The (pokemon_name) has been successfully removed from your Pokedex.
+```
 
 ## Autor
 
