@@ -1,6 +1,6 @@
 <div align="center">
   <a href="https://github.com/marcos-asdes/projeto21R-pokedex-API#readme">
-    <img src="https://icon-library.com/images/pokedex-icon/pokedex-icon-21.jpg" alt="pokedex logo" width="150"/>
+    <img src="https://icon-library.com/images/pokedex-icon/pokedex-icon-21.jpg" alt="pokedex logo" width="175px"/>
   </a>
 </div>
 
@@ -8,7 +8,12 @@
 <h1 align="center">Pokedex | Back-end</h3>
 </div>
 
-  Este projeto está em sua primeira versão, na temática do universo Pokemon, é uma API REST escrita em Typescript que retorna objetos JSON de acordo com a rota acessada, com o intuito de reproduzir algumas funcionalidades de um Pokedex.
+
+# Pokedex | Back-end
+
+Este projeto está em sua primeira versão, na temática do universo Pokemon, é uma API REST escrita em Typescript que retorna objetos JSON de acordo com a rota acessada, com o intuito de reproduzir algumas funcionalidades de um Pokedex.
+
+https://project-pokedex-api-production.up.railway.app/
 
 ## Tech Stack
 
@@ -16,7 +21,7 @@
 
 **Banco de dados:** postgres (SQL) com ORM Prisma
 
-**Deploy:** back-end + banco de dados no railways
+**Deploy:** back-end + banco de dados no railway
 
 **Padronização de código:** Prettier e Eslint
 
@@ -30,7 +35,7 @@
   POST /api/sign-up
 ```
 
-#### formato da requisição JSON esperada
+#### Formato da requisição JSON esperada
 
 ```JSON
   { 
@@ -40,7 +45,7 @@
   }
 ```
 
-#### resposta bem-sucedida esperada
+#### Resposta bem-sucedida esperada
 
 ```String
     Status Code: 201
@@ -53,7 +58,7 @@
   POST /api/sign-in
 ```
 
-#### formato da requisição JSON esperada
+#### Formato da requisição JSON esperada
 
 ```JSON
   { 
@@ -62,7 +67,7 @@
   }
 ```
 
-#### resposta bem-sucedida esperada
+#### Resposta bem-sucedida esperada
 
 ```String
     Status Code: 200
@@ -83,7 +88,7 @@ O token de autenticação é enviado ao _header Authentication_ se o login for v
 | :-------- | :------- | :------------------------- |
 | `token` | `string` | **Requerido**. Chave de usuário logado passada através do _header Authentication_ com valor `Bearer ${token}`|
 
-#### resposta bem-sucedida esperada
+#### Resposta bem-sucedida esperada
 
 ```JSON
 [
@@ -112,7 +117,7 @@ O token de autenticação é enviado ao _header Authentication_ se o login for v
 | `token` | `string` | **Requerido**. Chave de usuário logado passada através do _header Authentication_ com valor `Bearer ${token}`|
 | `id` | `integer` | **Requerido**. Id do Pokemon passado como _queryParams_ no lugar de `:id`|
 
-#### resposta bem-sucedida esperada
+#### Resposta bem-sucedida esperada
 
 ```String
     Status Code: 200
@@ -130,12 +135,105 @@ O token de autenticação é enviado ao _header Authentication_ se o login for v
 | `token` | `string` | **Requerido**. Chave de usuário logado passada através do _header Authentication_ com valor `Bearer ${token}`|
 | `id` | `integer` | **Requerido**. Id do Pokemon passado como _queryParams_ no lugar de `:id`|
 
-#### resposta bem-sucedida esperada
+#### Resposta bem-sucedida esperada
 
 ```String
     Status Code: 200
     The (pokemon_name) has been successfully removed from your Pokedex.
 ```
+
+## Adições de conteúdo e funcionalidades planejadas
+
+- Scripts de testes unitários e de integração para cada uma das rotas criadas.
+- Estrutura de armazenamento de memória cache para requisições repetidas, porém sem atualização de dados, utilizando o Redis.
+- Uma rota que retorne apenas os Pokemons adicionados na Pokedex pessoal do mestre Pokemon.
+- Uma rota alternativa para adição de Pokemon pelo seu nome.
+- Uma rota que fornecidas uma lista de características retorne todos os Pokemons que sejam compatíveis com elas no Pokedex global.
+- Uma rota que fornecidas uma lista de características retorne todos os Pokemons que sejam compatíveis com elas no Pokedex pessoal.
+
+
+## Testes manuais
+
+Para a execução dos testes manuais é necessário o auxílio de uma extensão de testes, como por exemplo, o Insomnia, o ThunderClient, entre outras.
+
+De posse de uma extensão de testes é possível utilizar as rotas da API apresentadas acima. Seguindo as instruções e métodos habilitados para cada rota e completando o URL da rota com o link de deploy da API:
+
+https://project-pokedex-api-production.up.railway.app/
+
+#### Exemplo
+
+```url
+  https://project-pokedex-api-production.up.railway.app/api/sign-up
+
+  Uma requisição em método POST e carregando um objeto JSON dentro das regras da rota.
+```
+
+
+## Variáveis de ambiente
+
+Para executar este projeto numa máquina pessoal, após clonar o projeto, você precisará adicionar as seguintes variáveis de ambiente ao seu arquivo .env: 
+
+Para conexão com o banco de dados faz se necessário a variável `DATABASE_URL`, com valor `postgres://<postgres_user>:<postgres_password>@<url_host>:<url_port>/<postgres_database>`, substituindo os campos conforme os dados pessoais do seu postgres. Em localhost `<url_host>:<url_port>` fica como `localhost:5432`.
+
+A variável `SALT` com valor númerico inteiro e positivo auxilia na encriptação de senha.
+
+As variáveis `JWT_SECRET`, `JWT_EXPIRES_IN` e `JWT_ALGORITHM`, onde a primeira variável é uma senha pessoal para geração de token de formato jwt encriptado, e as demais variáveis são configurações que constam na documentação da biblioteca jwt, recomenda-se utilizar os valores `1d` para expiração do token após 1 dia e `HS256` como padrão de criptografia, respectivamente.
+
+
+## Rodando localmente
+
+Abra o seu terminal e clone o projeto.
+
+```bash
+  git clone https://github.com/marcos-asdes/project-Pokedex-API.git
+```
+
+O projeto se encontrará na pasta padrão de usuário da sua máquina.
+
+Entre na pasta do projeto.
+
+```bash
+  cd project-Pokedex-API
+```
+
+Instale as dependências do projeto.
+
+```bash
+  npm install
+```
+
+Insira as variáveis de ambiente no seu arquivo .env.
+
+Chame o ORM Prisma para que ele crie as tabelas do banco de dados.
+
+```bash
+  npm run migrate
+
+  or
+  
+  npx prisma migrate dev
+```
+
+Inicie o servidor
+
+```bash
+  npm run build
+  npm run start
+
+  or
+
+  npm run ts:start
+
+  or
+
+  npm run dev
+```
+
+
+## License
+
+[MIT](https://github.com/marcos-asdes/project-Pokedex-API/blob/main/LICENSE)
+
 
 ## Autor
 
