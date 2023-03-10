@@ -6,13 +6,13 @@ class AppError {
   log: string
   statusCode: number
   message: string
-  details: string | {} | string[]
+  details: string | {} | string[] | unknown
 
-  constructor (
+  constructor(
     log: string,
     statusCode: number,
     message: string,
-    details: string | {} | string[]
+    details: string | {} | string[] | unknown
   ) {
     this.log = log
     this.statusCode = statusCode
@@ -21,7 +21,7 @@ class AppError {
   }
 }
 
-function errorHandler (
+function errorHandler(
   error: any,
   _req: Request,
   res: Response,

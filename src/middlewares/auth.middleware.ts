@@ -1,12 +1,12 @@
 import { Request, Response, NextFunction } from 'express'
 
 import appLog from '../events/appLog.js'
-import { User } from '../types/types.js'
+import { User } from '@prisma/client'
 
 import * as service from '../services/auth.service.js'
 
 // sign up middleware
-async function checkIfEmailIsAlreadyRegistered (_req: Request, res: Response, next: NextFunction) {
+async function checkIfEmailIsAlreadyRegistered(_req: Request, res: Response, next: NextFunction) {
   const email: string = res.locals.body.email
 
   await service.findUserByEmail_expectDataIsNull(email)
@@ -16,7 +16,7 @@ async function checkIfEmailIsAlreadyRegistered (_req: Request, res: Response, ne
 }
 
 // sign in middlewares
-async function checkIfEmailIsValid (_req: Request, res: Response, next: NextFunction) {
+async function checkIfEmailIsValid(_req: Request, res: Response, next: NextFunction) {
   const email: string = res.locals.body.email
 
   const user_data = await service.findUserByEmail_expectDataIsntNull(email)
@@ -26,7 +26,7 @@ async function checkIfEmailIsValid (_req: Request, res: Response, next: NextFunc
   next()
 }
 
-async function checkIfPasswordIsValid (_req: Request, res: Response, next: NextFunction) {
+async function checkIfPasswordIsValid(_req: Request, res: Response, next: NextFunction) {
   const password: string = res.locals.body.password
   const user_data: User = res.locals.user_data
 
@@ -36,8 +36,8 @@ async function checkIfPasswordIsValid (_req: Request, res: Response, next: NextF
   next()
 }
 
-export { 
-  checkIfEmailIsAlreadyRegistered, 
-  checkIfEmailIsValid, 
-  checkIfPasswordIsValid 
+export {
+  checkIfEmailIsAlreadyRegistered,
+  checkIfEmailIsValid,
+  checkIfPasswordIsValid
 }

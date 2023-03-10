@@ -9,9 +9,18 @@ import { AppError } from '../events/appError.js'
 import { CreateUser } from '../types/types.js'
 
 function hashPassword(password: string) {
-  const encrypted = bcrypt.hashSync(password, +process.env.SALT)
-  appLog('Service', 'Password encrypted')
-  return encrypted
+  if (process.env.SALT) {
+    const encrypted = bcrypt.hashSync(password, +process.env.SALT)
+    appLog('Service', 'Password encrypted')
+    return encrypted
+  } else {
+    throw new AppError(
+      'Internal Server Error',
+      500,
+      'SALT environment variable not found',
+      'Insert the environment variable SALT in .env file',
+    );
+  }
 }
 
 function decryptPassword(password: string, encrypted: string) {
@@ -23,15 +32,25 @@ function decryptPassword(password: string, encrypted: string) {
 function generateToken(id: string) {
   const data = {}
   const subject = id
-  const secretKey = process.env.JWT_SECRET
-  const expiresIn = process.env.JWT_EXPIRES_IN
-  // jwt config
-  const algorithm = process.env.JWT_ALGORITHM as Algorithm
-  const config: SignOptions = { algorithm, expiresIn, subject }
-  // jwt sign
-  const token = jwt.sign(data, secretKey, config)
-  appLog('Service', 'Token generated')
-  return token
+  if (process.env.JWT_SECRET && process.env.JWT_EXPIRES_IN && process.env.JWT_ALGORITHM) {
+    const secretKey = process.env.JWT_SECRET
+    const expiresIn = process.env.JWT_EXPIRES_IN
+    // jwt config
+    const algorithm = process.env.JWT_ALGORITHM as Algorithm
+    const config: SignOptions = { algorithm, expiresIn, subject }
+    // jwt sign
+    const token = jwt.sign(data, secretKey, config)
+    appLog('Service', 'Token generated')
+    return token
+  } else {
+    throw new AppError(
+      'Internal Server Error',
+      500,
+      'JWT environment variables not found',
+      'Insert the environment variables JWT_SECRET, JWT_EXPIRES_IN and JWT_ALGORITHM in .env file',
+    );
+  }
+
 }
 
 // export functions

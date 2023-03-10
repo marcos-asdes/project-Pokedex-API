@@ -7,7 +7,8 @@ import appLog from "../events/appLog.js";
 import * as service from "../services/auth.service.js";
 
 export default async function validateTokenMiddleware(req: Request, res: Response, next: NextFunction) {
-  const authHeader: string = req.header("Authorization");
+  const authHeader = req.header("Authorization");
+
   if (!authHeader) {
     throw new AppError(
       'Missing authorization header',
@@ -29,13 +30,16 @@ export default async function validateTokenMiddleware(req: Request, res: Respons
     );
   }
 
-  let subject = null; // subject is id
   try {
-    const { sub } = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
-    subject = sub;
-    const user_data = await service.findUserById_idAsString(subject);
-    res.locals.user_data = user_data;
-    res.locals.subject = subject;
+    if (process.env.JWT_SECRET) {
+      const { sub } = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
+      if (sub) {
+        const subject = sub; // subject is id
+        const user_data = await service.findUserById_idAsString(subject);
+        res.locals.user_data = user_data;
+        res.locals.subject = subject;
+      }
+    }
   } catch (error) {
     throw new AppError(
       'Invalid token',
