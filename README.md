@@ -8,10 +8,7 @@
 <h1 align="center">Pokedex | Back-end</h3>
 </div>
 
-
-# Pokedex | Back-end
-
-Este projeto está em sua primeira versão, na temática do universo Pokemon, é uma API REST escrita em Typescript que retorna objetos JSON de acordo com a rota acessada, com o intuito de reproduzir algumas funcionalidades de um Pokedex.
+Este projeto, que está em sua primeira versão, possui temática do universo Pokemon. Ele consiste numa API REST escrita em Typescript que retorna objetos JSON de acordo com a rota acessada, com o intuito de reproduzir algumas funcionalidades de um Pokedex.
 
 https://project-pokedex-api-production.up.railway.app/
 
@@ -148,36 +145,34 @@ O token de autenticação é enviado ao _header Authentication_ se o login for v
 - Estrutura de armazenamento de memória cache para requisições repetidas, porém sem atualização de dados, utilizando o Redis.
 - Uma rota que retorne apenas os Pokemons adicionados na Pokedex pessoal do mestre Pokemon.
 - Uma rota alternativa para adição de Pokemon pelo seu nome.
-- Uma rota que fornecidas uma lista de características retorne todos os Pokemons que sejam compatíveis com elas no Pokedex global.
-- Uma rota que fornecidas uma lista de características retorne todos os Pokemons que sejam compatíveis com elas no Pokedex pessoal.
+- Uma rota que, ao fornecer uma lista de características, retorne todos os Pokemons registrados no Pokedex global que sejam compatíveis.
+- Uma rota que, ao fornecer uma lista de características, retorne todos os Pokemons registrados no Pokedex pessoal que sejam compatíveis.
 
 
 ## Testes manuais
 
-Para a execução dos testes manuais é necessário o auxílio de uma extensão de testes, como por exemplo, o Insomnia, o ThunderClient, entre outras.
+Para a execução dos testes manuais, é necessário o auxílio de uma extensão de testes, como por exemplo, Insomnia, ThunderClient, entre outras.
 
-De posse de uma extensão de testes é possível utilizar as rotas da API apresentadas acima. Seguindo as instruções e métodos habilitados para cada rota e completando o URL da rota com o link de deploy da API:
-
-https://project-pokedex-api-production.up.railway.app/
+De posse de uma extensão de testes, seguindo as instruções e métodos habilitados para cada rota e complementando o URL da rota com o link de deploy da API, é possível utilizar as rotas da API apresentadas anteriormente, conforme exemplo a seguir:
 
 #### Exemplo
 
 ```url
   https://project-pokedex-api-production.up.railway.app/api/sign-up
 
-  Uma requisição em método POST e carregando um objeto JSON dentro das regras da rota.
+  Uma requisição, em método POST, carregando um objeto JSON dentro das regras da rota.
 ```
 
 
 ## Variáveis de ambiente
 
-Para executar este projeto numa máquina pessoal, após clonar o projeto, você precisará adicionar as seguintes variáveis de ambiente ao seu arquivo .env: 
+Para executar este projeto numa máquina pessoal, após clonar o projeto, é necessário adicionar as seguintes variáveis de ambiente ao seu arquivo .env: 
 
-Para conexão com o banco de dados faz se necessário a variável `DATABASE_URL`, com valor `postgres://<postgres_user>:<postgres_password>@<url_host>:<url_port>/<postgres_database>`, substituindo os campos conforme os dados pessoais do seu postgres. Em localhost `<url_host>:<url_port>` fica como `localhost:5432`.
+- Para conexão com o banco de dados necessita-se da variável `DATABASE_URL`, com valor `postgres://<postgres_user>:<postgres_password>@<url_host>:<url_port>/<postgres_database>`, substituindo os campos conforme os dados pessoais do seu postgres. Em localhost, o trecho `<url_host>:<url_port>` fica como `localhost:5432`.
 
-A variável `SALT` com valor númerico inteiro e positivo auxilia na encriptação de senha.
+- A variável `SALT`, com valor numérico inteiro e positivo, auxilia na encriptação de senha.
 
-As variáveis `JWT_SECRET`, `JWT_EXPIRES_IN` e `JWT_ALGORITHM`, onde a primeira variável é uma senha pessoal para geração de token de formato jwt encriptado, e as demais variáveis são configurações que constam na documentação da biblioteca jwt, recomenda-se utilizar os valores `1d` para expiração do token após 1 dia e `HS256` como padrão de criptografia, respectivamente.
+- As variáveis `JWT_SECRET`, `JWT_EXPIRES_IN` e `JWT_ALGORITHM`, onde a primeira variável é uma senha pessoal para geração de token de formato jwt encriptado, e as demais variáveis são configurações que constam na documentação da biblioteca jwt, nas quais recomenda-se utilizar os valores `1d` para expiração do token após 1 dia e `HS256` como padrão de criptografia, respectivamente.
 
 
 ## Rodando localmente
@@ -214,7 +209,7 @@ Chame o ORM Prisma para que ele crie as tabelas do banco de dados.
   npx prisma migrate dev
 ```
 
-Inicie o servidor
+Inicie o servidor.
 
 ```bash
   npm run build
@@ -239,3 +234,4 @@ Inicie o servidor
 
 [@marcos-asdes](https://www.github.com/marcos-asdes)
 
+<!-- Reativando deploy -->
