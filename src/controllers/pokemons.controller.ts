@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 
 import appLog from '../events/appLog.js'
-import { DataWithBoolean } from '../types/types.js'
+import { PokemonDataWithBoolean } from '../types/types.js'
 
 import * as service from '../services/pokemons.service.js'
 
@@ -9,7 +9,7 @@ async function getPokemons(_req: Request, res: Response) {
   const subject: string = res.locals.subject // user id
 
   const data = await service.getAllPokemons()
-  const updated_data: DataWithBoolean[] = await service.addPokemonBooleanProp(subject, data)
+  const updated_data: PokemonDataWithBoolean[] = await service.addPokemonBooleanProp(subject, data)
 
   appLog('Controller', 'Successfully obtained pokemons')
   return res.status(200).send(updated_data)

@@ -39,6 +39,13 @@ export default async function validateTokenMiddleware(req: Request, res: Respons
         res.locals.user_data = user_data;
         res.locals.subject = subject;
       }
+    } else {
+      throw new AppError(
+        'Internal Server Error',
+        500,
+        'JWT environment variable not found',
+        'Insert the environment variable JWT_SECRET in .env file',
+      );
     }
   } catch (error) {
     throw new AppError(

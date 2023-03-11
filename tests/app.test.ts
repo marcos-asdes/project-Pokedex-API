@@ -2,7 +2,7 @@ import supertest from 'supertest'
 import { faker } from '@faker-js/faker'
 
 import app from '../src/app.js'
-import client from '../src/config/database.js'
+// import client from '../src/config/database.js'
 
 // Environment variables
 const EMAIL = faker.internet.email()
@@ -19,7 +19,7 @@ describe('Test suite: method post - route /sign-up', () => {
   let route = '/sign-up'
 
   // verificar se um metodo post é executado retornando status 201
-  it('generic text 1', async() => {
+  it('generic text 1', async () => {
     const response = await postBody(route)
     expect(response.statusCode).toEqual(201)
   })

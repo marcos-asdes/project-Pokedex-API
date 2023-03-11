@@ -1,6 +1,7 @@
 import { AppError } from '../events/appError.js';
 import appLog from '../events/appLog.js'
-import { DataWithBoolean, DataWithoutBoolean } from '../types/types.js';
+import { PokemonDataWithBoolean } from '../types/types.js';
+import { Pokemon } from '@prisma/client'
 import { popPokedex } from '../../prisma/seed.js';
 
 import * as repository from '../repositories/pokemons.repository.js'
@@ -9,26 +10,26 @@ async function getAllPokemons() {
   let data = await repository.getAllPokemonsInDatabase()
   appLog('Repository', 'Repository accessed successfully')
 
-  if(data.length === 0) {
+  if (data.length === 0) {
     await popPokedex()
     data = await repository.getAllPokemonsInDatabase()
     appLog('Repository', 'Populated pokemon table')
   }
-  
+
   appLog('Service', 'Data pokemons obtained from database')
   return data
 }
 
-async function addPokemonBooleanProp(id: string, data: DataWithoutBoolean[]) {
-  const dataWithBoolean: DataWithBoolean[] = data.map((e) => ({...e, inMyPokemons: false}))
+async function addPokemonBooleanProp(id: string, data: Pokemon[]) {
+  const dataWithBoolean: PokemonDataWithBoolean[] = data.map((e) => ({ ...e, inMyPokemons: false }))
   dataWithBoolean.sort((a, b) => (a.id - b.id))
-  
+
   const pokemonsInUserCollection = await repository.selectPokemonsInUserCollection(id)
   appLog('Repository', 'Repository accessed successfully')
 
-  for(let i=0; i<pokemonsInUserCollection.length; i++) {
-    dataWithBoolean[pokemonsInUserCollection[i].pokemonId - 1] = 
-    {...dataWithBoolean[pokemonsInUserCollection[i].pokemonId - 1], inMyPokemons: true}
+  for (let i = 0; i < pokemonsInUserCollection.length; i++) {
+    dataWithBoolean[pokemonsInUserCollection[i].pokemonId - 1] =
+      { ...dataWithBoolean[pokemonsInUserCollection[i].pokemonId - 1], inMyPokemons: true }
   }
   appLog('Service', 'Pokemon boolean prop updated')
   return dataWithBoolean
@@ -52,7 +53,7 @@ async function findPokemonByIdNumber(id: number) {
 async function checkIfPokemonsIsAlreadyInUserCollection(pokemonId: number, userId: string) {
   const data = await repository.checkIfPokemonsIsAlreadyInCollectionWithIds(pokemonId, userId)
   appLog('Repository', 'Repository accessed successfully')
-  if (data.length!==0) {
+  if (data.length !== 0) {
     throw new AppError(
       'Pokemon already exists in user collection',
       409,
@@ -72,7 +73,7 @@ async function addPokemon(id: number, subject: string) {
 async function checkIfPokemonsIsInUserCollection(pokemonId: number, userId: string) {
   const data = await repository.checkIfPokemonsIsAlreadyInCollectionWithIds(pokemonId, userId)
   appLog('Repository', 'Repository accessed successfully')
-  if (data.length===0) {
+  if (data.length === 0) {
     throw new AppError(
       'Pokemon does not exists in user collection',
       409,
@@ -83,17 +84,17 @@ async function checkIfPokemonsIsInUserCollection(pokemonId: number, userId: stri
   return appLog('Service', 'Pokemon registered in user collection')
 }
 
-async function removePokemon(id: number, subject: string){
+async function removePokemon(id: number, subject: string) {
   await repository.removePokemonFromUserCollection(id, subject)
   appLog('Repository', 'Repository accessed successfully')
   return appLog('Service', 'Pokemon removed successfully')
 }
 
-export { 
-  getAllPokemons, 
+export {
+  getAllPokemons,
   addPokemonBooleanProp,
-  findPokemonByIdNumber, 
-  checkIfPokemonsIsAlreadyInUserCollection, 
+  findPokemonByIdNumber,
+  checkIfPokemonsIsAlreadyInUserCollection,
   addPokemon,
   checkIfPokemonsIsInUserCollection,
   removePokemon
