@@ -3,7 +3,7 @@ import { Request, Response } from 'express'
 import appLog from '../events/appLog.js'
 import { PokemonDataWithBoolean } from '../types/types.js'
 
-import * as service from '../services/pokemons.service.js'
+import * as service from '../services/pokemonsService.js'
 
 async function getPokemons(_req: Request, res: Response) {
   const subject: string = res.locals.subject // user id

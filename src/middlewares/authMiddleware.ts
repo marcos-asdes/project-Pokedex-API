@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 import appLog from '../events/appLog.js'
 import { User } from '@prisma/client'
 
-import * as service from '../services/auth.service.js'
+import * as service from '../services/authService.js'
 
 // sign up middleware
 async function checkIfEmailIsAlreadyRegistered(_req: Request, res: Response, next: NextFunction) {

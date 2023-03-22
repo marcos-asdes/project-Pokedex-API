@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 
 import appLog from '../events/appLog.js'
 
-import * as service from '../services/auth.service.js'
+import * as service from '../services/authService.js'
 
 // sign up controller
 async function registerUser(_req: Request, res: Response) {

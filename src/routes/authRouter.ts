@@ -1,10 +1,10 @@
 import { Router } from 'express'
 
-import * as schema from '../schemas/auth.schema.js'
-import * as middleware from '../middlewares/auth.middleware.js'
-import * as controller from '../controllers/auth.controller.js'
+import * as schema from '../schemas/authSchema.js'
+import * as middleware from '../middlewares/authMiddleware.js'
+import * as controller from '../controllers/authController.js'
 
-import validateSchemaMiddleware from '../middlewares/schema.middleware.js'
+import validateSchemaMiddleware from '../middlewares/schemaMiddleware.js'
 
 const authRouter = Router()
 

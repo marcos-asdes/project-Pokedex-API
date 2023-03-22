@@ -4,7 +4,7 @@ import { PokemonDataWithBoolean } from '../types/types.js';
 import { Pokemon } from '@prisma/client'
 import { popPokedex } from '../../prisma/seed.js';
 
-import * as repository from '../repositories/pokemons.repository.js'
+import * as repository from '../repositories/pokemonsRepository.js'
 
 async function getAllPokemons() {
   let data = await repository.getAllPokemonsInDatabase()

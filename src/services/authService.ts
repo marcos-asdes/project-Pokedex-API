@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt'
 import jwt, { Algorithm, SignOptions } from 'jsonwebtoken'
 import { Request } from 'express'
 
-import * as repository from '../repositories/auth.repository.js'
+import * as repository from '../repositories/authRepository.js'
 
 import appLog from '../events/appLog.js'
 import { AppError } from '../events/appError.js'

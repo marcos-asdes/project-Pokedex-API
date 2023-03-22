@@ -1,9 +1,9 @@
 import { Router } from 'express'
 
-import * as middleware from '../middlewares/pokemons.middleware.js'
-import * as controller from '../controllers/pokemons.controller.js'
+import * as middleware from '../middlewares/pokemonsMiddleware.js'
+import * as controller from '../controllers/pokemonsController.js'
 
-import validateTokenMiddleware from '../middlewares/token.middleware.js'
+import validateTokenMiddleware from '../middlewares/tokenMiddleware.js'
 
 const pokemonsRouter = Router()
 

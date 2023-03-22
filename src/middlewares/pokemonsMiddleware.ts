@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express'
 
 import appLog from '../events/appLog.js';
 
-import * as service from '../services/pokemons.service.js'
+import * as service from '../services/pokemonsService.js'
 
 async function checkIfPokemonExists (req: Request, res: Response, next: NextFunction) {
   const { id } = req.params

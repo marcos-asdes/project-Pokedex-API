@@ -4,7 +4,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { AppError } from "../events/appError.js";
 import appLog from "../events/appLog.js";
 
-import * as service from "../services/auth.service.js";
+import * as service from "../services/authService.js"
 
 export default async function validateTokenMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.header("Authorization");
