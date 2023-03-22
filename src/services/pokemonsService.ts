@@ -40,7 +40,6 @@ async function findPokemonByIdNumber(id: number) {
   appLog('Repository', 'Repository accessed successfully')
   if (!data) {
     throw new AppError(
-      'Pokemon does not exist in database',
       404,
       'Pokemon does not exist in database',
       'Enter a valid pokemon id'
@@ -55,7 +54,6 @@ async function checkIfPokemonsIsAlreadyInUserCollection(pokemonId: number, userI
   appLog('Repository', 'Repository accessed successfully')
   if (data.length !== 0) {
     throw new AppError(
-      'Pokemon already exists in user collection',
       409,
       'Pokemon already exists in user collection',
       'Add a new pokemon to the collection'
@@ -75,7 +73,6 @@ async function checkIfPokemonsIsInUserCollection(pokemonId: number, userId: stri
   appLog('Repository', 'Repository accessed successfully')
   if (data.length === 0) {
     throw new AppError(
-      'Pokemon does not exists in user collection',
       409,
       'Pokemon does not exists in user collection',
       'Remove a pokemon that exists in the collection'

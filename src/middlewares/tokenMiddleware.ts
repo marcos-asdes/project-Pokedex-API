@@ -11,7 +11,6 @@ export default async function validateTokenMiddleware(req: Request, res: Respons
 
   if (!authHeader) {
     throw new AppError(
-      'Missing authorization header',
       401,
       'Missing authorization header',
       'Ensure to provide the necessary headers',
@@ -23,38 +22,35 @@ export default async function validateTokenMiddleware(req: Request, res: Respons
   //const token = authHeader.replace('Bearer ', '').trim() ?? null;;
   if (!token) {
     throw new AppError(
-      'Missing token',
       401,
       'Missing token',
       'Ensure to provide the required token',
     );
   }
 
-  try {
-    if (process.env.JWT_SECRET) {
+  if (process.env.JWT_SECRET) {
+    try {
       const { sub } = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload;
       if (sub) {
-        const subject = sub; // subject is id
-        const user_data = await service.findUserById_idAsString(subject);
+        const user_data = await service.findUserById_idAsString(sub);
         res.locals.user_data = user_data;
-        res.locals.subject = subject;
+        res.locals.subject = sub;
       }
-    } else {
+    } catch (error) {
       throw new AppError(
-        'Internal Server Error',
-        500,
-        'JWT environment variable not found',
-        'Insert the environment variable JWT_SECRET in .env file',
+        401,
+        'Invalid token',
+        error,
       );
     }
-  } catch (error) {
+  } else {
     throw new AppError(
-      'Invalid token',
-      401,
-      'Invalid token',
-      error,
+      500,
+      'JWT environment variable not found',
+      'Insert the environment variable JWT_SECRET in .env file',
     );
   }
+
   appLog('Middleware', 'Valid token');
   next();
 }

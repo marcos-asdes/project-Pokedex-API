@@ -15,7 +15,6 @@ function hashPassword(password: string) {
     return encrypted
   } else {
     throw new AppError(
-      'Internal Server Error',
       500,
       'SALT environment variable not found',
       'Insert the environment variable SALT in .env file',
@@ -44,7 +43,6 @@ function generateToken(id: string) {
     return token
   } else {
     throw new AppError(
-      'Internal Server Error',
       500,
       'JWT environment variables not found',
       'Insert the environment variables JWT_SECRET, JWT_EXPIRES_IN and JWT_ALGORITHM in .env file',
@@ -61,7 +59,6 @@ async function findUserByEmail_expectDataIsNull(email: string) {
   appLog('Repository', 'Repository accessed successfully')
   if (data) {
     throw new AppError(
-      'Email already registered',
       409,
       'Email already registered',
       'Ensure to provide an email address that is not already in use'
@@ -87,7 +84,6 @@ async function findUserByEmail_expectDataIsntNull(email: string) {
   appLog('Repository', 'Repository accessed successfully')
   if (!data) {
     throw new AppError(
-      'Email not found',
       401,
       'Email not found',
       'Ensure to provide a valid email address'
@@ -101,7 +97,6 @@ function passwordIsValid(inputedPassword: string, databasePassword: string) {
   const passwordIsValid = decryptPassword(inputedPassword, databasePassword)
   if (!passwordIsValid) {
     throw new AppError(
-      'Invalid password',
       401,
       'Invalid password',
       'Ensure to provide a valid password'
@@ -123,7 +118,6 @@ async function findUserById_idAsString(id: string) {
   appLog('Repository', 'Repository accessed successfully')
   if (!data) {
     throw new AppError(
-      'User not found',
       404,
       'User not found',
       'Critical Failure: The provided userId is not related to any user'

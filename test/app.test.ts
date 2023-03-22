@@ -1,7 +1,7 @@
 import supertest from 'supertest'
 import { faker } from '@faker-js/faker'
 
-import app from '../src/app.js'
+import app from './app.js'
 // import client from '../src/config/database.js'
 
 // Environment variables
