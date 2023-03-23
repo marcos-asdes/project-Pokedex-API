@@ -145,7 +145,8 @@ dist
 # Serverless Webpack directories
 .webpack/
 
-# Optional stylelint cache
+# ignore artifact
+build
 
 # SvelteKit build / generate output
 .svelte-kit

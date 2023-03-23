@@ -1,8 +1,8 @@
-import { AppError } from '../events/appError.js';
+import { AppError } from '../events/appError.js'
 import appLog from '../events/appLog.js'
-import { PokemonDataWithBoolean } from '../types/types.js';
+import { PokemonDataWithBoolean } from '../types/types.js'
 import { Pokemon } from '@prisma/client'
-import { popPokedex } from '../../prisma/seed.js';
+import { popPokedex } from '../../prisma/seed.js'
 
 import * as repository from '../repositories/pokemonsRepository.js'
 

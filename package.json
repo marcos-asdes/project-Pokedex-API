@@ -22,14 +22,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/marcos-asdes/projeto21R-pokedex-API.git"
+    "url": "git+https://github.com/marcos-asdes/project-pokedex-api.git"
   },
   "author": "Marcos Antonio",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/marcos-asdes/projeto21R-pokedex-API/issues"
+    "url": "https://github.com/marcos-asdes/project-pokedex-api/issues"
   },
-  "homepage": "https://github.com/marcos-asdes/projeto21R-pokedex-API#readme",
+  "homepage": "https://github.com/marcos-asdes/project-pokedex-api#readme",
+  "eslintConfig": {
+    "extends": [
+      "prettier"
+    ]
+  },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
     "@types/bcrypt": "^5.0.0",
@@ -39,8 +44,12 @@
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "^18.15.0",
     "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.56.0",
+    "@typescript-eslint/parser": "^5.56.0",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^7.0.0",
+    "eslint": "^8.36.0",
+    "eslint-config-prettier": "^8.8.0",
     "jest": "^29.5.0",
     "prettier": "2.8.6",
     "supertest": "^6.3.3",

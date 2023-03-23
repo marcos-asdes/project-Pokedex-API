@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express'
 
-import appLog from '../events/appLog.js';
+import appLog from '../events/appLog.js'
 
 import * as service from '../services/pokemonsService.js'
 
@@ -10,7 +10,7 @@ async function checkIfPokemonExists (req: Request, res: Response, next: NextFunc
 
   const pokemon_data = await service.findPokemonByIdNumber(pokemonId)
 
-  res.locals.pokemon_data = pokemon_data;
+  res.locals.pokemon_data = pokemon_data
   appLog('Middleware', 'Pokemon exists in database')
   next()
 }

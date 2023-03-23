@@ -18,7 +18,7 @@ function hashPassword(password: string) {
       500,
       'SALT environment variable not found',
       'Insert the environment variable SALT in .env file',
-    );
+    )
   }
 }
 
@@ -46,7 +46,7 @@ function generateToken(id: string) {
       500,
       'JWT environment variables not found',
       'Insert the environment variables JWT_SECRET, JWT_EXPIRES_IN and JWT_ALGORITHM in .env file',
-    );
+    )
   }
 
 }
@@ -55,15 +55,15 @@ function generateToken(id: string) {
 
 // sign up services
 async function findUserByEmail_expectDataIsNull(email: string) {
-  const data = await repository.findByEmail(email);
+  const data = await repository.findByEmail(email)
   appLog('Repository', 'Repository accessed successfully')
   if (data) {
     throw new AppError(
       409,
       'Email already registered',
       'Ensure to provide an email address that is not already in use'
-    );
-  };
+    )
+  }
   return appLog('Service', 'Email is available for registration')
 }
 
@@ -80,15 +80,15 @@ async function registerUserInDatabase(body: CreateUser) {
 
 // sign in services
 async function findUserByEmail_expectDataIsntNull(email: string) {
-  const data = await repository.findByEmail(email);
+  const data = await repository.findByEmail(email)
   appLog('Repository', 'Repository accessed successfully')
   if (!data) {
     throw new AppError(
       401,
       'Email not found',
       'Ensure to provide a valid email address'
-    );
-  };
+    )
+  }
   appLog('Service', 'Email found in database')
   return data
 }
@@ -114,17 +114,17 @@ function sendTokenToHeader(id: string, req: Request) {
 
 // validateTokenMiddleware service
 async function findUserById_idAsString(id: string) {
-  const data = await repository.findByIdString(id);
+  const data = await repository.findByIdString(id)
   appLog('Repository', 'Repository accessed successfully')
   if (!data) {
     throw new AppError(
       404,
       'User not found',
       'Critical Failure: The provided userId is not related to any user'
-    );
-  };
+    )
+  }
   appLog('Service', 'User found in database')
-  return data;
+  return data
 }
 
 export {
