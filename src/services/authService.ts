@@ -7,6 +7,7 @@ import * as repository from '../repositories/authRepository.js'
 import appLog from '../events/appLog.js'
 import { AppError } from '../events/appError.js'
 import { CreateUser } from '../types/types.js'
+import { User } from '@prisma/client'
 
 function hashPassword(password: string) {
   if (process.env.SALT) {
@@ -55,7 +56,7 @@ function generateToken(id: string) {
 
 // sign up services
 async function findUserByEmail_expectDataIsNull(email: string) {
-  const data = await repository.findByEmail(email)
+  const data: User | null = await repository.findByEmail(email)
   appLog('Repository', 'Repository accessed successfully')
   if (data) {
     throw new AppError(
@@ -67,7 +68,7 @@ async function findUserByEmail_expectDataIsNull(email: string) {
   return appLog('Service', 'Email is available for registration')
 }
 
-async function registerUserInDatabase(body: CreateUser) {
+async function registerUserInDatabase(body: CreateUser):Promise<void> {
   const password = hashPassword(body.password)
   const data = {
     email: body.email,

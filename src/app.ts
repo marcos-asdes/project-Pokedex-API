@@ -4,6 +4,7 @@ import dotenv from 'dotenv'
 import helmet from 'helmet'
 import 'express-async-errors'
 
+//import './utils/module-alias.js'
 import router from './routes/index.js'
 import errorHandler from './events/appError.js'
 
