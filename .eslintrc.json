@@ -32,6 +32,11 @@
     "semi": [
       "error",
       "never"
+    ],
+    "no-trailing-spaces": [
+      {
+        "skipBlankLines": true
+      }
     ]
   }
 }

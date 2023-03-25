@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 
 import app from './app.js'
+import { connectToDatabase } from './config/database.js'
 
 import appLog from './events/appLog.js'
 
@@ -21,3 +22,5 @@ app.get('/', (_req: Request, res: Response) => {
   Server listening on port ${PORT}.
   `)
 })
+
+connectToDatabase()

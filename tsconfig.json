@@ -1,10 +1,78 @@
 {
   "compilerOptions": {
-    "esModuleInterop": true,
-    "module": "es6",
+    "target": "ES2017",
     "moduleResolution": "node",
-    "outDir": "dist"
+    "module": "es6",
+    "lib": [
+      "es6"
+    ],
+    "sourceMap": true,
+    "outDir": "dist",
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "resolveJsonModule": true,
+    "alwaysStrict": true,
+    "removeComments": true,
+    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@src/*": [
+        "./src/*"
+      ],
+      "@test/*": [
+        "./tests/*"
+      ],
+      "@controllers/*": [
+        "./src/controllers/*"
+      ],
+      "@middlewares/*": [
+        "./src/middlewares/*"
+      ],
+      "@repositories/*": [
+        "./src/repositories/*"
+      ],
+      "@routes/*": [
+        "./src/routes/*"
+      ],
+      "@services/*": [
+        "./src/services/*"
+      ],
+      "@events/*": [
+        "./src/events/*"
+      ],
+      "@schemas/*": [
+        "./src/schemas/*"
+      ],
+      "@utils/*": [
+        "./src/utils/*"
+      ],
+      "@types/*": [
+        "./src/types/*"
+      ],
+      "@config/*": [
+        "./src/config/*"
+      ],
+    },
+    "rootDirs": [
+      "./src",
+      "./tests"
+    ],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
+  "include": [
+    "./src/**/*.ts",
+    "./tests/**/*.ts"
+  ],
+  "exclude": [
+    "./node_modules/*",
+    "./dist/*"
+  ],
   "ts-node": {
     "esm": true
   }
