@@ -3,7 +3,6 @@ import client from '../config/database.js'
 import { CreateUser } from '../types/types.js'
 
 async function findByEmail (email: string): Promise<User | null> {
-  console.log('deu ruim')
   return await client.user.findUnique({ where: { email } })
 }
 

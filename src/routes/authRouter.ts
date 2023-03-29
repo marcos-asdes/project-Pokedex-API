@@ -9,9 +9,10 @@ import { routeEvent } from '../events/routeEvent.js'
 
 const authRouter = Router()
 
+authRouter.use(routeEvent)
+
 authRouter.post(
   '/sign-up',
-  routeEvent,
   validateSchemaMiddleware(schema.RegisterUser),
   middleware.checkIfEmailIsAlreadyRegistered,
   controller.registerUser
@@ -19,7 +20,6 @@ authRouter.post(
 
 authRouter.post(
   '/sign-in',
-  routeEvent,
   validateSchemaMiddleware(schema.SignIn),
   middleware.checkIfEmailIsValid,
   middleware.checkIfPasswordIsValid,
