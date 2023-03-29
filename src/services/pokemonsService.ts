@@ -27,9 +27,9 @@ async function addPokemonBooleanProp(id: string, data: Pokemon[]) {
   const pokemonsInUserCollection = await repository.selectPokemonsInUserCollection(id)
   appLog('Repository', 'Repository accessed successfully')
 
-  for (let i = 0; i < pokemonsInUserCollection.length; i++) {
-    dataWithBoolean[pokemonsInUserCollection[i].pokemonId - 1] =
-      { ...dataWithBoolean[pokemonsInUserCollection[i].pokemonId - 1], inMyPokemons: true }
+  for (const pokemon of pokemonsInUserCollection) {
+    dataWithBoolean[pokemon.pokemonId - 1] =
+      { ...dataWithBoolean[pokemon.pokemonId - 1], inMyPokemons: true }
   }
   appLog('Service', 'Pokemon boolean prop updated')
   return dataWithBoolean

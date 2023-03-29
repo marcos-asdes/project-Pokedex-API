@@ -6,6 +6,7 @@ import 'express-async-errors'
 
 //import './utils/module-alias.js'
 import router from './routes/index.js'
+import { apiLimiter } from './middlewares/rateLimitMiddleware.js'
 import errorHandler from './events/appError.js'
 
 dotenv.config()
@@ -15,6 +16,7 @@ app.use(cors())
 app.use(json())
 app.use(helmet())
 app.use(router)
-app.use(errorHandler) 
+app.use(errorHandler)
+app.use(apiLimiter)
 
 export default app
