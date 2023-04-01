@@ -55,7 +55,7 @@ function generateToken(id: string) {
 // export functions
 
 // sign up services
-async function checkIfEmailIsAlreadyRegistered(email: string):Promise<boolean> {
+async function checkIfEmailIsAlreadyRegistered(email: string):Promise<void> {
   const data: User | null = await repository.findByEmail(email)
   appLog('Repository', 'Repository accessed successfully')
   if (data) {
@@ -66,7 +66,6 @@ async function checkIfEmailIsAlreadyRegistered(email: string):Promise<boolean> {
     )
   }
   appLog('Service', 'Email is available for registration')
-  return true
 }
 
 async function registerUserInDatabase(body: CreateUser):Promise<void> {
