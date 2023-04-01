@@ -12,7 +12,7 @@ import client from '../src/config/database.js'
   await client.$disconnect()
 }) */
 beforeAll(async () => {
-  await client.$disconnect
+  client.$disconnect
 })
 afterEach(() => jest.clearAllMocks())
 // Environment variables
@@ -27,8 +27,7 @@ describe('Test suite: method post - route /sign-up', () => {
 
   // verificar se um metodo post é executado retornando status 201
   test('generic text 1', () => {
-    const body = { email: EMAIL, password: PASSWORD }
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
+    //const body = { email: EMAIL, password: PASSWORD }
     jest.spyOn(authRepository, 'findByEmail').mockImplementation((): any => {})
     //jest.spyOn(authRepository, 'registerUser').mockImplementation(():any => null)
     //const response = await supertest(app).post(route).send(body)

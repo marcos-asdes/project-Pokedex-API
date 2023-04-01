@@ -1,10 +1,11 @@
+import { User } from '@prisma/client'
 import { NextFunction, Request, Response } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'
 
 import { AppError } from '../events/appError.js'
 import appLog from '../events/appLog.js'
 
-import * as service from '../services/authService.js'
+import * as repository from '../repositories/authRepository.js'
 
 export default async function validateTokenMiddleware(
   req: Request,
@@ -36,7 +37,15 @@ export default async function validateTokenMiddleware(
     try {
       const { sub } = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload
       if (sub) {
-        const user_data = await service.findUserById_idAsString(sub)
+        const user_data: User | null = await repository.findUserByIdString(sub)
+        appLog('Repository', 'Repository accessed successfully')
+        if (!user_data) {
+          throw new AppError(
+            404,
+            'User not found',
+            'Critical Failure: The provided userId is not related to any user'
+          )
+        }
         res.locals.user_data = user_data
         res.locals.subject = sub
       }

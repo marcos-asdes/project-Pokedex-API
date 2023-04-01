@@ -6,7 +6,7 @@ async function findByEmail(email: string): Promise<User | null> {
   return await client.user.findUnique({ where: { email } })
 }
 
-async function findByIdString(id: string) {
+async function findUserByIdString(id: string) {
   return await client.user.findUnique({ where: { id } })
 }
 
@@ -14,4 +14,4 @@ async function registerUser(data: CreateUser): Promise<CreateUser | null> {
   return await client.user.create({ data })
 }
 
-export { findByEmail, findByIdString, registerUser }
+export { findByEmail, findUserByIdString, registerUser }

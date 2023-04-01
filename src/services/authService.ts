@@ -83,7 +83,7 @@ async function registerUserInDatabase(body: CreateUser): Promise<void> {
 }
 
 // sign in services
-async function findUserByEmail_expectDataIsntNull(email: string) {
+async function checkIfEmailIsValid(email: string): Promise<User> {
   const data = await repository.findByEmail(email)
   appLog('Repository', 'Repository accessed successfully')
   if (!data) {
@@ -97,7 +97,10 @@ async function findUserByEmail_expectDataIsntNull(email: string) {
   return data
 }
 
-function passwordIsValid(inputedPassword: string, databasePassword: string) {
+function checkIfPasswordIsValid(
+  inputedPassword: string,
+  databasePassword: string
+) {
   const passwordIsValid = decryptPassword(inputedPassword, databasePassword)
   if (!passwordIsValid) {
     throw new AppError(
@@ -109,33 +112,17 @@ function passwordIsValid(inputedPassword: string, databasePassword: string) {
   return appLog('Service', 'Password checked')
 }
 
-function sendTokenToHeader(id: string, req: Request) {
+async function sendTokenToHeader(id: string, req: Request) {
   const token = generateToken(id)
   req.headers = { Authorization: 'Bearer ' + token }
   appLog('Service', `Token stored in header as ${token}`)
   return token
 }
 
-// validateTokenMiddleware service
-async function findUserById_idAsString(id: string) {
-  const data = await repository.findByIdString(id)
-  appLog('Repository', 'Repository accessed successfully')
-  if (!data) {
-    throw new AppError(
-      404,
-      'User not found',
-      'Critical Failure: The provided userId is not related to any user'
-    )
-  }
-  appLog('Service', 'User found in database')
-  return data
-}
-
 export {
   checkIfEmailIsAlreadyRegistered,
   registerUserInDatabase,
-  findUserByEmail_expectDataIsntNull,
-  passwordIsValid,
-  sendTokenToHeader,
-  findUserById_idAsString
+  checkIfEmailIsValid,
+  checkIfPasswordIsValid,
+  sendTokenToHeader
 }
