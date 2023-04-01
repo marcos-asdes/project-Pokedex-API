@@ -5,16 +5,6 @@ import { User } from '@prisma/client'
 
 import * as service from '../services/authService.js'
 
-// sign up middleware
-async function checkIfEmailIsAlreadyRegistered(_req: Request, res: Response, next: NextFunction) {
-  const email: string = res.locals.body.email
-
-  await service.findUserByEmail_expectDataIsNull(email)
-
-  appLog('Middleware', 'Email is available for registration')
-  next()
-}
-
 // sign in middlewares
 async function checkIfEmailIsValid(_req: Request, res: Response, next: NextFunction) {
   const email: string = res.locals.body.email
@@ -37,7 +27,6 @@ async function checkIfPasswordIsValid(_req: Request, res: Response, next: NextFu
 }
 
 export {
-  checkIfEmailIsAlreadyRegistered,
   checkIfEmailIsValid,
   checkIfPasswordIsValid
 }

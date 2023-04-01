@@ -8,6 +8,8 @@ import * as service from '../services/authService.js'
 async function registerUser(_req: Request, res: Response) {
   const body = res.locals.body
 
+  await service.checkIfEmailIsAlreadyRegistered(body.email)
+
   await service.registerUserInDatabase(body)
 
   const user = body.email
