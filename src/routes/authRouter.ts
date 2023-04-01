@@ -14,7 +14,6 @@ authRouter.use(routeEvent)
 authRouter.post(
   '/sign-up',
   validateSchemaMiddleware(schema.RegisterUser),
-  middleware.checkIfEmailIsAlreadyRegistered,
   controller.registerUser
 )
 

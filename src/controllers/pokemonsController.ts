@@ -9,7 +9,8 @@ async function getPokemons(_req: Request, res: Response) {
   const subject: string = res.locals.subject // user id
 
   const data = await service.getAllPokemons()
-  const updated_data: PokemonDataWithBoolean[] = await service.addPokemonBooleanProp(subject, data)
+  const updated_data: PokemonDataWithBoolean[] =
+    await service.addPokemonBooleanProp(subject, data)
 
   appLog('Controller', 'Successfully obtained pokemons')
   return res.status(200).send(updated_data)

@@ -18,7 +18,7 @@ function hashPassword(password: string) {
     throw new AppError(
       500,
       'SALT environment variable not found',
-      'Insert the environment variable SALT in .env file',
+      'Insert the environment variable SALT in .env file'
     )
   }
 }
@@ -32,7 +32,11 @@ function decryptPassword(password: string, encrypted: string) {
 function generateToken(id: string) {
   const data = {}
   const subject = id
-  if (process.env.JWT_SECRET && process.env.JWT_EXPIRES_IN && process.env.JWT_ALGORITHM) {
+  if (
+    process.env.JWT_SECRET &&
+    process.env.JWT_EXPIRES_IN &&
+    process.env.JWT_ALGORITHM
+  ) {
     const secretKey = process.env.JWT_SECRET
     const expiresIn = process.env.JWT_EXPIRES_IN
     // jwt config
@@ -46,16 +50,15 @@ function generateToken(id: string) {
     throw new AppError(
       500,
       'JWT environment variables not found',
-      'Insert the environment variables JWT_SECRET, JWT_EXPIRES_IN and JWT_ALGORITHM in .env file',
+      'Insert the environment variables JWT_SECRET, JWT_EXPIRES_IN and JWT_ALGORITHM in .env file'
     )
   }
-
 }
 
 // export functions
 
 // sign up services
-async function checkIfEmailIsAlreadyRegistered(email: string):Promise<void> {
+async function checkIfEmailIsAlreadyRegistered(email: string): Promise<void> {
   const data: User | null = await repository.findByEmail(email)
   appLog('Repository', 'Repository accessed successfully')
   if (data) {
@@ -68,7 +71,7 @@ async function checkIfEmailIsAlreadyRegistered(email: string):Promise<void> {
   appLog('Service', 'Email is available for registration')
 }
 
-async function registerUserInDatabase(body: CreateUser):Promise<void> {
+async function registerUserInDatabase(body: CreateUser): Promise<void> {
   const password = hashPassword(body.password)
   const data = {
     email: body.email,
@@ -108,7 +111,7 @@ function passwordIsValid(inputedPassword: string, databasePassword: string) {
 
 function sendTokenToHeader(id: string, req: Request) {
   const token = generateToken(id)
-  req.headers = { 'Authorization': 'Bearer ' + token }
+  req.headers = { Authorization: 'Bearer ' + token }
   appLog('Service', `Token stored in header as ${token}`)
   return token
 }

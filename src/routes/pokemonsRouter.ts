@@ -10,11 +10,7 @@ const pokemonsRouter = Router()
 
 pokemonsRouter.use(routeEvent)
 
-pokemonsRouter.get(
-  '/pokemons',
-  validateTokenMiddleware,
-  controller.getPokemons
-)
+pokemonsRouter.get('/pokemons', validateTokenMiddleware, controller.getPokemons)
 
 pokemonsRouter.post(
   '/my-pokemons/:id/add',

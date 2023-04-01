@@ -1,7 +1,7 @@
 import chalk from 'chalk'
 
 interface Logs {
-  [key: string]: string;
+  [key: string]: string
 }
 
 type LogTypes =
@@ -28,7 +28,14 @@ const types: Logs = {
 const appLog = (type: LogTypes, text: string) => {
   console.log(
     chalk.bold[
-      types[type] as 'white' | 'green' | 'magenta' | 'blue' | 'yellow' | 'cyan' | 'red'
+      types[type] as
+        | 'white'
+        | 'green'
+        | 'magenta'
+        | 'blue'
+        | 'yellow'
+        | 'cyan'
+        | 'red'
     ](`[${type}] ${text}`)
   )
 }

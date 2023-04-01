@@ -4,7 +4,11 @@ import appLog from '../events/appLog.js'
 
 import * as service from '../services/pokemonsService.js'
 
-async function checkIfPokemonExists (req: Request, res: Response, next: NextFunction) {
+async function checkIfPokemonExists(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const { id } = req.params
   const pokemonId = Number(id)
 
@@ -15,7 +19,11 @@ async function checkIfPokemonExists (req: Request, res: Response, next: NextFunc
   next()
 }
 
-async function checkIfPokemonsIsAlreadyInCollection (_req: Request, res: Response, next: NextFunction) {
+async function checkIfPokemonsIsAlreadyInCollection(
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const id: number = res.locals.pokemon_data.id
   const subject: string = res.locals.subject // user id
 
@@ -25,7 +33,11 @@ async function checkIfPokemonsIsAlreadyInCollection (_req: Request, res: Respons
   next()
 }
 
-async function checkIfPokemonsIsInCollection(_req: Request, res: Response, next: NextFunction) {
+async function checkIfPokemonsIsInCollection(
+  _req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const id: number = res.locals.pokemon_data.id
   const subject: string = res.locals.subject // user id
 
@@ -35,8 +47,8 @@ async function checkIfPokemonsIsInCollection(_req: Request, res: Response, next:
   next()
 }
 
-export { 
-  checkIfPokemonExists, 
+export {
+  checkIfPokemonExists,
   checkIfPokemonsIsAlreadyInCollection,
   checkIfPokemonsIsInCollection
 }

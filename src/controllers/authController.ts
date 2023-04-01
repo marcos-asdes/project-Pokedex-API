@@ -33,7 +33,4 @@ function loginUser(req: Request, res: Response) {
   return res.status(200).send(data)
 }
 
-export {
-  registerUser,
-  loginUser
-}
+export { registerUser, loginUser }

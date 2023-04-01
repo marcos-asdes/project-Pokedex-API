@@ -32,9 +32,9 @@ function errorHandler(
   return error.statusCode !== 500
     ? res.status(statusCode).send({ message, details })
     : res.status(500).send({
-      message: 'Internal server error',
-      details: error
-    })
+        message: 'Internal server error',
+        details: error
+      })
 }
 
 export { AppError }

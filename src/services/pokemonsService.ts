@@ -21,15 +21,21 @@ async function getAllPokemons() {
 }
 
 async function addPokemonBooleanProp(id: string, data: Pokemon[]) {
-  const dataWithBoolean: PokemonDataWithBoolean[] = data.map((e) => ({ ...e, inMyPokemons: false }))
-  dataWithBoolean.sort((a, b) => (a.id - b.id))
+  const dataWithBoolean: PokemonDataWithBoolean[] = data.map(e => ({
+    ...e,
+    inMyPokemons: false
+  }))
+  dataWithBoolean.sort((a, b) => a.id - b.id)
 
-  const pokemonsInUserCollection = await repository.selectPokemonsInUserCollection(id)
+  const pokemonsInUserCollection =
+    await repository.selectPokemonsInUserCollection(id)
   appLog('Repository', 'Repository accessed successfully')
 
   for (const pokemon of pokemonsInUserCollection) {
-    dataWithBoolean[pokemon.pokemonId - 1] =
-      { ...dataWithBoolean[pokemon.pokemonId - 1], inMyPokemons: true }
+    dataWithBoolean[pokemon.pokemonId - 1] = {
+      ...dataWithBoolean[pokemon.pokemonId - 1],
+      inMyPokemons: true
+    }
   }
   appLog('Service', 'Pokemon boolean prop updated')
   return dataWithBoolean
@@ -49,8 +55,14 @@ async function findPokemonByIdNumber(id: number) {
   return data
 }
 
-async function checkIfPokemonsIsAlreadyInUserCollection(pokemonId: number, userId: string) {
-  const data = await repository.checkIfPokemonsIsAlreadyInCollectionWithIds(pokemonId, userId)
+async function checkIfPokemonsIsAlreadyInUserCollection(
+  pokemonId: number,
+  userId: string
+) {
+  const data = await repository.checkIfPokemonsIsAlreadyInCollectionWithIds(
+    pokemonId,
+    userId
+  )
   appLog('Repository', 'Repository accessed successfully')
   if (data.length !== 0) {
     throw new AppError(
@@ -68,8 +80,14 @@ async function addPokemon(id: number, subject: string) {
   return appLog('Service', 'Pokemon added successfully')
 }
 
-async function checkIfPokemonsIsInUserCollection(pokemonId: number, userId: string) {
-  const data = await repository.checkIfPokemonsIsAlreadyInCollectionWithIds(pokemonId, userId)
+async function checkIfPokemonsIsInUserCollection(
+  pokemonId: number,
+  userId: string
+) {
+  const data = await repository.checkIfPokemonsIsAlreadyInCollectionWithIds(
+    pokemonId,
+    userId
+  )
   appLog('Repository', 'Repository accessed successfully')
   if (data.length === 0) {
     throw new AppError(

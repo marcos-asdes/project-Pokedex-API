@@ -13,7 +13,7 @@ export default function validateSchemaMiddleware(schema: ObjectSchema) {
       throw new AppError(
         400,
         'Invalid input',
-        error.details.map((e) => e.message).join(', ')
+        error.details.map(e => e.message).join(', ')
       )
     }
 

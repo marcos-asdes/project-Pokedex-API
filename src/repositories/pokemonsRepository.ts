@@ -1,10 +1,10 @@
 import client from '../config/database.js'
 
-async function getAllPokemonsInDatabase () {
+async function getAllPokemonsInDatabase() {
   return await client.pokemon.findMany()
 }
 
-async function selectPokemonsInUserCollection (id: string) {
+async function selectPokemonsInUserCollection(id: string) {
   return await client.usersPokemons.findMany({
     where: {
       userId: id
@@ -12,11 +12,14 @@ async function selectPokemonsInUserCollection (id: string) {
   })
 }
 
-async function findByIdNumber (id: number) {
-  return await client.pokemon.findUnique({where: { id }})
+async function findByIdNumber(id: number) {
+  return await client.pokemon.findUnique({ where: { id } })
 }
 
-async function checkIfPokemonsIsAlreadyInCollectionWithIds (pokemonId: number, userId: string) {
+async function checkIfPokemonsIsAlreadyInCollectionWithIds(
+  pokemonId: number,
+  userId: string
+) {
   const select = await client.usersPokemons.findMany({
     where: {
       AND: [
@@ -32,7 +35,7 @@ async function checkIfPokemonsIsAlreadyInCollectionWithIds (pokemonId: number, u
   return select
 }
 
-async function addPokemonInUserCollection (pokemonId: number, userId: string) {
+async function addPokemonInUserCollection(pokemonId: number, userId: string) {
   return await client.usersPokemons.create({
     data: {
       userId: userId,
@@ -41,8 +44,14 @@ async function addPokemonInUserCollection (pokemonId: number, userId: string) {
   })
 }
 
-async function removePokemonFromUserCollection (pokemonId: number, userId: string) {
-  const select = await checkIfPokemonsIsAlreadyInCollectionWithIds(pokemonId, userId)
+async function removePokemonFromUserCollection(
+  pokemonId: number,
+  userId: string
+) {
+  const select = await checkIfPokemonsIsAlreadyInCollectionWithIds(
+    pokemonId,
+    userId
+  )
   return await client.usersPokemons.delete({
     where: {
       id: select[0].id
@@ -50,10 +59,10 @@ async function removePokemonFromUserCollection (pokemonId: number, userId: strin
   })
 }
 
-export { 
+export {
   getAllPokemonsInDatabase,
   selectPokemonsInUserCollection,
-  findByIdNumber, 
+  findByIdNumber,
   checkIfPokemonsIsAlreadyInCollectionWithIds,
   addPokemonInUserCollection,
   removePokemonFromUserCollection

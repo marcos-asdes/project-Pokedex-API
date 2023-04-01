@@ -1,6 +1,6 @@
 import supertest from 'supertest'
 import { faker } from '@faker-js/faker'
-import {jest} from '@jest/globals'
+import { jest } from '@jest/globals'
 
 import app from '../src/app'
 //import client from '../src/config/database'
@@ -27,16 +27,16 @@ describe('Test suite: method post - route /sign-up', () => {
 
   // verificar se um metodo post é executado retornando status 201
   test('generic text 1', () => {
-    const body = { email: EMAIL, password: PASSWORD } 
+    const body = { email: EMAIL, password: PASSWORD }
     // eslint-disable-next-line @typescript-eslint/no-empty-function
-    jest.spyOn(authRepository, 'findByEmail').mockImplementation(():any => {})
+    jest.spyOn(authRepository, 'findByEmail').mockImplementation((): any => {})
     //jest.spyOn(authRepository, 'registerUser').mockImplementation(():any => null)
     //const response = await supertest(app).post(route).send(body)
-    authService.findUserByEmail_expectDataIsNull(body.email)
+    //authService.findUserByEmail_expectDataIsNull(body.email)
 
     expect(authRepository.findByEmail).toHaveBeenCalled()
   })
-  
+
   // verificar se a validação dos elementos do json está funcionando...
   // para o caso de email ou senha invalidos, retornar 400
   // verificar se o email no json já está registrado no db, retornar 400 caso esteja
@@ -67,4 +67,3 @@ describe('Test suite: method post - route /my-pokemons/:id/remove', () => {
   // se o post for bem sucedido, o status deve ser 200
 }) */
 })
-

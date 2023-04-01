@@ -6,14 +6,18 @@ import appLog from '../events/appLog.js'
 
 import * as service from '../services/authService.js'
 
-export default async function validateTokenMiddleware(req: Request, res: Response, next: NextFunction) {
+export default async function validateTokenMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const authHeader = req.header('Authorization')
 
   if (!authHeader) {
     throw new AppError(
       401,
       'Missing authorization header',
-      'Ensure to provide the necessary headers',
+      'Ensure to provide the necessary headers'
     )
   }
 
@@ -24,7 +28,7 @@ export default async function validateTokenMiddleware(req: Request, res: Respons
     throw new AppError(
       401,
       'Missing token',
-      'Ensure to provide the required token',
+      'Ensure to provide the required token'
     )
   }
 
@@ -37,17 +41,13 @@ export default async function validateTokenMiddleware(req: Request, res: Respons
         res.locals.subject = sub
       }
     } catch (error) {
-      throw new AppError(
-        401,
-        'Invalid token',
-        error,
-      )
+      throw new AppError(401, 'Invalid token', error)
     }
   } else {
     throw new AppError(
       500,
       'JWT environment variable not found',
-      'Insert the environment variable JWT_SECRET in .env file',
+      'Insert the environment variable JWT_SECRET in .env file'
     )
   }
 
