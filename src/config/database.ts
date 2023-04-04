@@ -7,13 +7,15 @@ dotenv.config()
 
 const client = new PrismaClient()
 
-export async function connectToDatabase () {
+export async function connectToDatabase() {
   try {
     await client.$connect()
-    appLog('Server', 'Connected to database')
+    /*     appLog('Server', 'Connected to database')
+     */
   } catch (error) {
-    appLog('Error', `${error}`)
+    /*     appLog('Error', `${error}`)
+     */
   }
-} 
+}
 
 export default client

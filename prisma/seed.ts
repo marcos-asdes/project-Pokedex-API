@@ -8,10 +8,11 @@ async function popPokedex() {
 
   await client.pokemon.deleteMany()
 
-  for(let i=1; i<=pokelist; i++) {
+  for (let i = 1; i <= pokelist; i++) {
     const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${i}/`
-    axios.get(pokeAPI)
-      .then(async(res) => {
+    axios
+      .get(pokeAPI)
+      .then(async res => {
         const data = res.data
         await client.pokemon.create({
           data: {
@@ -34,8 +35,8 @@ popPokedex()
   .then(async () => {
     await client.$disconnect()
   })
-  .catch(async (e) => {
-    console.error(e)
+  .catch(async e => {
+    appLog('Error', `${e}`)
     await client.$disconnect()
     process.exit(1)
   })

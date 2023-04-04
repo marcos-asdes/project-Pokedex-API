@@ -2,19 +2,19 @@ import { AppError } from '../events/appError.js'
 import appLog from '../events/appLog.js'
 import { PokemonDataWithBoolean } from '../types/types.js'
 import { Pokemon } from '@prisma/client'
-import { popPokedex } from '../../prisma/seed.js'
-
+/* import { popPokedex } from '../../prisma/seed.js'
+ */
 import * as repository from '../repositories/pokemonsRepository.js'
 
 async function getAllPokemons() {
   let data = await repository.getAllPokemonsInDatabase()
   appLog('Repository', 'Repository accessed successfully')
 
-  if (data.length === 0) {
+  /* if (data.length === 0) {
     await popPokedex()
     data = await repository.getAllPokemonsInDatabase()
     appLog('Repository', 'Populated pokemon table')
-  }
+  } */
 
   appLog('Service', 'Data pokemons obtained from database')
   return data

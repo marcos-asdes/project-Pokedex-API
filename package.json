@@ -21,7 +21,7 @@
     "check-updates": "npx npm-check-updates -u",
     "eslint": "npm init @eslint/config",
     "prepare": "husky install",
-    "test": "dotenv -e .env.test.local jest --projects ./tests --runInBand -i",
+    "test": "dotenv -e .env.test.local jest --projects ./tests --runInBand --detectOpenHandles -i",
     "test:int": "jest --projects ./tests --runInBand",
     "heroku:logs": "heroku logs --tail"
   },

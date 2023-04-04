@@ -1,44 +1,46 @@
 import supertest from 'supertest'
 import { faker } from '@faker-js/faker'
-import { jest } from '@jest/globals'
 
-import app from '../src/app'
-//import client from '../src/config/database'
-
-import * as authRepository from '../src/repositories/authRepository'
-import * as authService from '../src/services/authService'
+import app from '../src/app.js'
 import client from '../src/config/database.js'
-/* afterAll(async () => {
+
+afterAll(async () => {
   await client.$disconnect()
-}) */
-beforeAll(async () => {
-  client.$disconnect
 })
-afterEach(() => jest.clearAllMocks())
+
 // Environment variables
 const EMAIL = faker.internet.email()
 const PASSWORD = faker.internet.password()
-
-jest.mock('../src/repositories/authRepository.ts')
 
 // Integration tests
 describe('Test suite: method post - route /sign-up', () => {
   const route = '/api/sign-up'
 
-  // verificar se um metodo post é executado retornando status 201
-  test('generic text 1', () => {
-    //const body = { email: EMAIL, password: PASSWORD }
-    jest.spyOn(authRepository, 'findByEmail').mockImplementation((): any => {})
-    //jest.spyOn(authRepository, 'registerUser').mockImplementation(():any => null)
-    //const response = await supertest(app).post(route).send(body)
-    //authService.findUserByEmail_expectDataIsNull(body.email)
+  test('method post should return code 201', async () => {
+    const body = { email: EMAIL, password: PASSWORD, confirmPassword: PASSWORD }
 
-    expect(authRepository.findByEmail).toHaveBeenCalled()
+    const response = await supertest(app).post(route).send(body)
+
+    expect(response.status).toEqual(201)
   })
 
-  // verificar se a validação dos elementos do json está funcionando...
-  // para o caso de email ou senha invalidos, retornar 400
-  // verificar se o email no json já está registrado no db, retornar 400 caso esteja
+  test('method post should return code 409', async () => {
+    const body = { email: EMAIL, password: PASSWORD, confirmPassword: PASSWORD }
+
+    await supertest(app).post(route).send(body)
+    const response = await supertest(app).post(route).send(body)
+
+    expect(response.status).toEqual(409)
+  })
+
+  test('method post should return code 400', async () => {
+    const body = { email: PASSWORD, password: EMAIL, confirmPassword: PASSWORD }
+
+    const response = await supertest(app).post(route).send(body)
+
+    expect(response.status).toEqual(400)
+  })
+
   /* describe('Test suite: method post - route /sign-in', () => {
   // verificar se o metodo post é executado retornando status 200 e uma mensagem padrão de token
   // verificar se a validação dos elementos do json está funcionando...
