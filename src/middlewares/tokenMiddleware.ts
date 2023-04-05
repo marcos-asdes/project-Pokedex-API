@@ -38,7 +38,6 @@ export default async function validateTokenMiddleware(
       const { sub } = jwt.verify(token, process.env.JWT_SECRET) as JwtPayload
       if (sub) {
         const user_data: User | null = await repository.findUserByIdString(sub)
-        appLog('Repository', 'Repository accessed successfully')
         if (!user_data) {
           throw new AppError(
             404,

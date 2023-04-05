@@ -1,17 +1,23 @@
 import { User } from '@prisma/client'
 import client from '../config/database.js'
-import { CreateUser } from '../types/types.js'
+import appLog from '../events/appLog.js'
 
-async function findByEmail(email: string): Promise<User | null> {
-  return await client.user.findUnique({ where: { email } })
+async function findUserByEmail(email: string): Promise<User | null> {
+  const user = await client.user.findUnique({ where: { email } })
+  appLog('Repository', 'Repository accessed successfully')
+  return user
 }
 
-async function findUserByIdString(id: string) {
-  return await client.user.findUnique({ where: { id } })
+async function findUserByIdString(id: string): Promise<User | null> {
+  const user = await client.user.findUnique({ where: { id } })
+  appLog('Repository', 'Repository accessed successfully')
+  return user
 }
 
-async function registerUser(data: CreateUser): Promise<CreateUser | null> {
-  return await client.user.create({ data })
+async function registerUser(email: string, password: string): Promise<void> {
+  const data = { email: email, password: password }
+  await client.user.create({ data })
+  appLog('Repository', 'Repository accessed successfully')
 }
 
-export { findByEmail, findUserByIdString, registerUser }
+export { findUserByEmail, findUserByIdString, registerUser }

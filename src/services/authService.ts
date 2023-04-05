@@ -6,10 +6,9 @@ import * as repository from '../repositories/authRepository.js'
 
 import appLog from '../events/appLog.js'
 import { AppError } from '../events/appError.js'
-import { CreateUser } from '../types/types.js'
 import { User } from '@prisma/client'
 
-function hashPassword(password: string) {
+function hashPassword(password: string): string {
   if (process.env.SALT) {
     const encrypted = bcrypt.hashSync(password, +process.env.SALT)
     appLog('Service', 'Password encrypted')
@@ -23,13 +22,13 @@ function hashPassword(password: string) {
   }
 }
 
-function decryptPassword(password: string, encrypted: string) {
+function decryptPassword(password: string, encrypted: string): boolean {
   const passwordIsValid = bcrypt.compareSync(password, encrypted)
   appLog('Service', 'Password decrypted')
   return passwordIsValid
 }
 
-function generateToken(id: string) {
+function generateToken(id: string): string {
   const data = {}
   const subject = id
   if (
@@ -59,8 +58,7 @@ function generateToken(id: string) {
 
 // sign up services
 async function checkIfEmailIsAlreadyRegistered(email: string): Promise<void> {
-  const data: User | null = await repository.findByEmail(email)
-  appLog('Repository', 'Repository accessed successfully')
+  const data: User | null = await repository.findUserByEmail(email)
   if (data) {
     throw new AppError(
       409,
@@ -71,21 +69,19 @@ async function checkIfEmailIsAlreadyRegistered(email: string): Promise<void> {
   appLog('Service', 'Email is available for registration')
 }
 
-async function registerUserInDatabase(body: CreateUser): Promise<void> {
-  const password = hashPassword(body.password)
-  const data = {
-    email: body.email,
-    password: password
-  }
-  await repository.registerUser(data)
-  appLog('Repository', 'Repository accessed successfully')
-  return appLog('Service', 'User registered in the database')
+async function registerUserInDatabase(
+  email: string,
+  password: string
+): Promise<void> {
+  const hashedPassword = hashPassword(password)
+
+  await repository.registerUser(email, hashedPassword)
+  appLog('Service', 'User registered in the database')
 }
 
 // sign in services
 async function checkIfEmailIsValid(email: string): Promise<User> {
-  const data = await repository.findByEmail(email)
-  appLog('Repository', 'Repository accessed successfully')
+  const data = await repository.findUserByEmail(email)
   if (!data) {
     throw new AppError(
       401,
@@ -100,7 +96,7 @@ async function checkIfEmailIsValid(email: string): Promise<User> {
 function checkIfPasswordIsValid(
   inputedPassword: string,
   databasePassword: string
-) {
+): void {
   const passwordIsValid = decryptPassword(inputedPassword, databasePassword)
   if (!passwordIsValid) {
     throw new AppError(
@@ -109,10 +105,10 @@ function checkIfPasswordIsValid(
       'Ensure to provide a valid password'
     )
   }
-  return appLog('Service', 'Password checked')
+  appLog('Service', 'Password checked')
 }
 
-async function sendTokenToHeader(id: string, req: Request) {
+async function sendTokenToHeader(id: string, req: Request): Promise<string> {
   const token = generateToken(id)
   req.headers = { Authorization: 'Bearer ' + token }
   appLog('Service', `Token stored in header as ${token}`)

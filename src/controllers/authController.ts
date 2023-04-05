@@ -4,32 +4,33 @@ import appLog from '../events/appLog.js'
 
 import * as service from '../services/authService.js'
 
+import { User } from '@prisma/client'
+
 // sign up controller
-async function registerUser(_req: Request, res: Response) {
-  const body = res.locals.body
+async function registerUser(_req: Request, res: Response): Promise<Response> {
+  const { email, password } = res.locals.body
 
-  await service.checkIfEmailIsAlreadyRegistered(body.email)
+  await service.checkIfEmailIsAlreadyRegistered(email)
 
-  await service.registerUserInDatabase(body)
+  await service.registerUserInDatabase(email, password)
 
-  const email = body.email
-  const data = `User ${email} was registered successfully.`
+  const data: string = `User ${email} was registered successfully.`
 
   appLog('Controller', 'User signed up')
   return res.status(201).send(data)
 }
 
 // sign in controller
-async function loginUser(req: Request, res: Response) {
+async function loginUser(req: Request, res: Response): Promise<Response> {
   const { email, password } = res.locals.body
 
-  const user_data = await service.checkIfEmailIsValid(email)
+  const user_data: User = await service.checkIfEmailIsValid(email)
 
   service.checkIfPasswordIsValid(password, user_data?.password)
 
-  const token = await service.sendTokenToHeader(user_data?.id, req)
+  const token: string = await service.sendTokenToHeader(user_data?.id, req)
 
-  const data = `User ${email} has successfully logged in. \n\n User token: ${token}`
+  const data: string = `User ${email} has successfully logged in. \n\n User token: ${token}`
 
   appLog('Controller', 'User signed in')
   return res.status(200).send(data)
