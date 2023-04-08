@@ -5,16 +5,12 @@ export default {
   testEnvironment: 'node',
   extensionsToTreatAsEsm: ['.ts'],
   transform: {
-    '^.+\\.[tj]sx?$': [
-      'ts-jest', {
-        compiler: 'typescript'
-      }
-    ]
+    '^.+\\.[tj]sx?$': 'babel-jest'
   },
   moduleNameMapper: {
     '^(\\.{1,2}/.*)\\.js$': '$1',
   },
-  moduleDirectories: ['node_modules', 'src'],
+  moduleDirectories: ['node_modules', '<rootdir>/src'],
   modulePathIgnorePatterns: [
     '<rootDir>/node_modules',
     '<rootDir>/coverage',

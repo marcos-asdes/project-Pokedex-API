@@ -36,6 +36,10 @@
   },
   "homepage": "https://github.com/marcos-asdes/project-pokedex-api#readme",
   "devDependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/plugin-transform-runtime": "^7.21.4",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-typescript": "^7.21.4",
     "@faker-js/faker": "^7.6.0",
     "@jest/globals": "^29.5.0",
     "@types/bcrypt": "^5.0.0",
@@ -48,6 +52,8 @@
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
+    "babel-jest": "^29.5.0",
+    "babel-plugin-transform-import-meta": "^2.2.0",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^7.0.0",
     "eslint": "^8.36.0",
@@ -60,7 +66,7 @@
     "lint-staged": "^13.2.0",
     "prettier": "2.8.6",
     "supertest": "^6.3.3",
-    "ts-jest": "^29.0.5",
+    "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.2",
     "typescript": "^4.9.5"
