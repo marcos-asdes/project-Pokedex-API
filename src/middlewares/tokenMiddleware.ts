@@ -1,18 +1,19 @@
-import { User } from '@prisma/client'
 import { NextFunction, Request, Response } from 'express'
 import jwt, { JwtPayload } from 'jsonwebtoken'
+
+import { User } from '@prisma/client'
 
 import { AppError } from '../events/appError.js'
 import appLog from '../events/appLog.js'
 
 import * as repository from '../repositories/authRepository.js'
 
-export default async function validateTokenMiddleware(
+async function validateTokenMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
-) {
-  const authHeader = req.header('Authorization')
+): Promise<void> {
+  const authHeader: string | undefined = req.header('Authorization')
 
   if (!authHeader) {
     throw new AppError(
@@ -31,7 +32,7 @@ export default async function validateTokenMiddleware(
       'Missing token',
       'Ensure to provide the required token'
     )
-  }
+  } // ATENÇÃO: testar essa condifional, !token ou token.length===0
 
   if (process.env.JWT_SECRET) {
     try {
@@ -62,3 +63,5 @@ export default async function validateTokenMiddleware(
   appLog('Middleware', 'Valid token')
   next()
 }
+
+export default validateTokenMiddleware

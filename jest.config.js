@@ -4,7 +4,7 @@ export default {
   preset: 'ts-jest',
   rootDir: '.',
   testEnvironment: 'node',
-  moduleFileExtensions: ["ts","tsx","js"],
+  moduleFileExtensions: ['ts','tsx','js', 'jsx'],
   transform: {
     '^.+\\.[tj]sx?$': [
       'ts-jest', {

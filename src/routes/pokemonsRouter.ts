@@ -9,12 +9,12 @@ import { routeEvent } from '../events/routeEvent.js'
 const pokemonsRouter = Router()
 
 pokemonsRouter.use(routeEvent)
+pokemonsRouter.use(validateTokenMiddleware)
 
-pokemonsRouter.get('/pokemons', validateTokenMiddleware, controller.getPokemons)
+pokemonsRouter.get('/pokemons', controller.getPokemons)
 
 pokemonsRouter.post(
   '/my-pokemons/:id/add',
-  validateTokenMiddleware,
   middleware.checkIfPokemonExists,
   middleware.checkIfPokemonsIsAlreadyInCollection,
   controller.postPokemonInUserCollection
@@ -22,7 +22,6 @@ pokemonsRouter.post(
 
 pokemonsRouter.post(
   '/my-pokemons/:id/remove',
-  validateTokenMiddleware,
   middleware.checkIfPokemonExists,
   middleware.checkIfPokemonsIsInCollection,
   controller.removePokemonFromUserCollection
