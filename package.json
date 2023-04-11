@@ -22,7 +22,7 @@
     "eslint": "npm init @eslint/config",
     "prepare": "husky install",
     "test": "dotenv -e .env.test.local jest -i",
-    "test:int": "dotenv -e .env.test.local jest --projects ./tests --runInBand -i",
+    "test:int": "dotenv -e .env.test.local jest --projects ./tests --runInBand --clearCache -i",
     "heroku:logs": "heroku logs --tail"
   },
   "repository": {
@@ -36,9 +36,6 @@
   },
   "homepage": "https://github.com/marcos-asdes/project-pokedex-api#readme",
   "devDependencies": {
-    "@babel/core": "^7.21.4",
-    "@babel/plugin-transform-runtime": "^7.21.4",
-    "@babel/preset-env": "^7.21.4",
     "@babel/preset-typescript": "^7.21.4",
     "@faker-js/faker": "^7.6.0",
     "@jest/globals": "^29.5.0",
@@ -47,13 +44,10 @@
     "@types/express": "^4.17.17",
     "@types/jest": "^29.4.0",
     "@types/jsonwebtoken": "^9.0.1",
-    "@types/module-alias": "^2.0.1",
     "@types/node": "^18.15.0",
     "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^5.56.0",
     "@typescript-eslint/parser": "^5.56.0",
-    "babel-jest": "^29.5.0",
-    "babel-plugin-transform-import-meta": "^2.2.0",
     "cross-env": "^7.0.3",
     "dotenv-cli": "^7.0.0",
     "eslint": "^8.36.0",
@@ -62,7 +56,6 @@
     "git-commit-msg-linter": "^4.9.2",
     "husky": "^8.0.3",
     "jest": "^29.5.0",
-    "jest-ts-webcompat-resolver": "^1.0.0",
     "lint-staged": "^13.2.0",
     "prettier": "2.8.6",
     "supertest": "^6.3.3",
@@ -83,7 +76,6 @@
     "helmet": "^6.0.1",
     "joi": "^17.8.3",
     "jsonwebtoken": "^9.0.0",
-    "module-alias": "^2.2.2",
     "nodemon": "^2.0.21",
     "prisma": "^4.11.0"
   },

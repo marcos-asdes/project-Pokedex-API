@@ -1,7 +1,7 @@
 import supertest from 'supertest'
 import { faker } from '@faker-js/faker'
 
-import app from '../src/app.js'
+import app from '../src/app'
 import client from '../src/config/database.js'
 
 afterAll(async () => {

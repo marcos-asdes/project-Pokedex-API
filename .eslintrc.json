@@ -8,7 +8,25 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "overrides": [],
+  "overrides": [
+    {
+      "files": [
+        "*.json"
+      ],
+      "parser": "json-parser",
+      "rules": {
+        "no-unused-vars": 0,
+        "indent": [
+          "error",
+          2
+        ],
+        "quotes": [
+          "error",
+          "double"
+        ]
+      }
+    }
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": 6
