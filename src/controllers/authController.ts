@@ -14,7 +14,7 @@ async function registerUser(_req: Request, res: Response): Promise<Response> {
 
   await service.registerUserInDatabase(email, password)
 
-  const data: string = `User ${email} was registered successfully.`
+  const data: string = `User ${email} has been registered successfully.`
 
   appLog('Controller', 'User signed up')
   return res.status(201).send(data)

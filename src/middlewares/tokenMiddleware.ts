@@ -23,7 +23,7 @@ async function validateTokenMiddleware(
     )
   }
 
-  const token = authHeader.replace('Bearer ', '')
+  const token: string = authHeader.replace('Bearer ', '')
   //const token = authHeader ? authHeader.split(" ")[1] : null;
   //const token = authHeader.replace('Bearer ', '').trim() ?? null;;
   if (!token) {
@@ -60,7 +60,7 @@ async function validateTokenMiddleware(
     )
   }
 
-  appLog('Middleware', 'Valid token')
+  appLog('Middleware', 'Validated token')
   next()
 }
 

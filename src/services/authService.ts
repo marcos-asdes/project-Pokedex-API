@@ -10,7 +10,7 @@ import { User } from '@prisma/client'
 
 function hashPassword(password: string): string {
   if (process.env.SALT) {
-    const encrypted = bcrypt.hashSync(password, +process.env.SALT)
+    const encrypted: string = bcrypt.hashSync(password, +process.env.SALT)
     appLog('Service', 'Password encrypted')
     return encrypted
   } else {
@@ -23,26 +23,26 @@ function hashPassword(password: string): string {
 }
 
 function decryptPassword(password: string, encrypted: string): boolean {
-  const passwordIsValid = bcrypt.compareSync(password, encrypted)
+  const passwordIsValid: boolean = bcrypt.compareSync(password, encrypted)
   appLog('Service', 'Password decrypted')
   return passwordIsValid
 }
 
 function generateToken(id: string): string {
   const data = {}
-  const subject = id
+  const subject: string = id
   if (
     process.env.JWT_SECRET &&
     process.env.JWT_EXPIRES_IN &&
     process.env.JWT_ALGORITHM
   ) {
-    const secretKey = process.env.JWT_SECRET
-    const expiresIn = process.env.JWT_EXPIRES_IN
+    const secretKey: string = process.env.JWT_SECRET
+    const expiresIn: string = process.env.JWT_EXPIRES_IN
     // jwt config
     const algorithm = process.env.JWT_ALGORITHM as Algorithm
     const config: SignOptions = { algorithm, expiresIn, subject }
     // jwt sign
-    const token = jwt.sign(data, secretKey, config)
+    const token: string = jwt.sign(data, secretKey, config)
     appLog('Service', 'Token generated')
     return token
   } else {
@@ -81,7 +81,7 @@ async function registerUserInDatabase(
 
 // sign in services
 async function checkIfEmailIsValid(email: string): Promise<User> {
-  const data = await repository.findUserByEmail(email)
+  const data: User | null = await repository.findUserByEmail(email)
   if (!data) {
     throw new AppError(
       401,
@@ -97,7 +97,10 @@ function checkIfPasswordIsValid(
   inputedPassword: string,
   databasePassword: string
 ): void {
-  const passwordIsValid = decryptPassword(inputedPassword, databasePassword)
+  const passwordIsValid: boolean = decryptPassword(
+    inputedPassword,
+    databasePassword
+  )
   if (!passwordIsValid) {
     throw new AppError(
       401,
@@ -109,7 +112,7 @@ function checkIfPasswordIsValid(
 }
 
 async function sendTokenToHeader(id: string, req: Request): Promise<string> {
-  const token = generateToken(id)
+  const token: string = generateToken(id)
   req.headers = { Authorization: 'Bearer ' + token }
   appLog('Service', `Token stored in header as ${token}`)
   return token

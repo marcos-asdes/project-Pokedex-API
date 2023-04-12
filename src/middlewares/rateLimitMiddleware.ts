@@ -1,9 +1,9 @@
 import { Request, Response } from 'express'
-import rateLimit from 'express-rate-limit'
+import rateLimit, { RateLimitRequestHandler } from 'express-rate-limit'
 
 import appLog from '../events/appLog.js'
 
-export const apiLimiter = rateLimit({
+export const apiLimiter: RateLimitRequestHandler = rateLimit({
   windowMs: 60 * 60 * 1000, // 60 minutes
   max: 50, // Limit each IP to 50 requests per `window` (here, per 60 minutes)
   standardHeaders: true,

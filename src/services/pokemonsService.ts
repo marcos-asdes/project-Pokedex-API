@@ -1,35 +1,29 @@
 import { AppError } from '../events/appError.js'
 import appLog from '../events/appLog.js'
 import { PokemonDataWithBoolean } from '../types/types.js'
-import { Pokemon } from '@prisma/client'
-/* import { popPokedex } from '../../prisma/seed.js'
- */
+import { Pokemon, UsersPokemons } from '@prisma/client'
+
 import * as repository from '../repositories/pokemonsRepository.js'
 
-async function getAllPokemons() {
+async function getAllPokemons(): Promise<Pokemon[]> {
   let data = await repository.getAllPokemonsInDatabase()
-  appLog('Repository', 'Repository accessed successfully')
-
-  /* if (data.length === 0) {
-    await popPokedex()
-    data = await repository.getAllPokemonsInDatabase()
-    appLog('Repository', 'Populated pokemon table')
-  } */
 
   appLog('Service', 'Data pokemons obtained from database')
   return data
 }
 
-async function addPokemonBooleanProp(id: string, data: Pokemon[]) {
+async function addPokemonBooleanProp(
+  id: string,
+  data: Pokemon[]
+): Promise<PokemonDataWithBoolean[]> {
   const dataWithBoolean: PokemonDataWithBoolean[] = data.map(e => ({
     ...e,
     inMyPokemons: false
   }))
   dataWithBoolean.sort((a, b) => a.id - b.id)
 
-  const pokemonsInUserCollection =
+  const pokemonsInUserCollection: UsersPokemons[] =
     await repository.selectPokemonsInUserCollection(id)
-  appLog('Repository', 'Repository accessed successfully')
 
   for (const pokemon of pokemonsInUserCollection) {
     dataWithBoolean[pokemon.pokemonId - 1] = {
@@ -41,9 +35,8 @@ async function addPokemonBooleanProp(id: string, data: Pokemon[]) {
   return dataWithBoolean
 }
 
-async function findPokemonByIdNumber(id: number) {
-  const data = await repository.findByIdNumber(Number(id))
-  appLog('Repository', 'Repository accessed successfully')
+async function checkIfPokemonExists(id: number): Promise<Pokemon> {
+  const data: Pokemon | null = await repository.findPokemonByIdNumber(id)
   if (!data) {
     throw new AppError(
       404,
@@ -55,62 +48,51 @@ async function findPokemonByIdNumber(id: number) {
   return data
 }
 
-async function checkIfPokemonsIsAlreadyInUserCollection(
+async function checkIfPokemonIsInUserCollection(
   pokemonId: number,
-  userId: string
-) {
-  const data = await repository.checkIfPokemonsIsAlreadyInCollectionWithIds(
-    pokemonId,
-    userId
-  )
-  appLog('Repository', 'Repository accessed successfully')
-  if (data.length !== 0) {
-    throw new AppError(
-      409,
-      'Pokemon already exists in user collection',
-      'Add a new pokemon to the collection'
-    )
+  userId: string,
+  route: string
+): Promise<void> {
+  const data: UsersPokemons[] | undefined =
+    await repository.checkIfPokemonIsInCollection(pokemonId, userId)
+  const regex: RegExp = /\b(add|remove)\b/
+  const match: RegExpMatchArray | null = route.match(regex)
+  if (match && match[0] === 'add') {
+    if (data.length !== 0) {
+      throw new AppError(
+        409,
+        'Pokemon already exists in user collection',
+        'Add a new pokemon to the collection'
+      )
+    }
+    appLog('Service', 'Pokemon not yet registered in user collection')
+  } else if (match && match[0] === 'remove') {
+    if (data.length === 0) {
+      throw new AppError(
+        409,
+        'Pokemon does not exists in user collection',
+        'Remove a pokemon that exists in the collection'
+      )
+    }
+    appLog('Service', 'Pokemon registered in user collection')
   }
-  return appLog('Service', 'Pokemon not yet registered in user collection')
 }
 
-async function addPokemon(id: number, subject: string) {
+async function addPokemon(id: number, subject: string): Promise<void> {
   await repository.addPokemonInUserCollection(id, subject)
-  appLog('Repository', 'Repository accessed successfully')
-  return appLog('Service', 'Pokemon added successfully')
+  appLog('Service', 'Pokemon added successfully')
 }
 
-async function checkIfPokemonsIsInUserCollection(
-  pokemonId: number,
-  userId: string
-) {
-  const data = await repository.checkIfPokemonsIsAlreadyInCollectionWithIds(
-    pokemonId,
-    userId
-  )
-  appLog('Repository', 'Repository accessed successfully')
-  if (data.length === 0) {
-    throw new AppError(
-      409,
-      'Pokemon does not exists in user collection',
-      'Remove a pokemon that exists in the collection'
-    )
-  }
-  return appLog('Service', 'Pokemon registered in user collection')
-}
-
-async function removePokemon(id: number, subject: string) {
+async function removePokemon(id: number, subject: string): Promise<void> {
   await repository.removePokemonFromUserCollection(id, subject)
-  appLog('Repository', 'Repository accessed successfully')
-  return appLog('Service', 'Pokemon removed successfully')
+  appLog('Service', 'Pokemon removed successfully')
 }
 
 export {
   getAllPokemons,
   addPokemonBooleanProp,
-  findPokemonByIdNumber,
-  checkIfPokemonsIsAlreadyInUserCollection,
+  checkIfPokemonExists,
+  checkIfPokemonIsInUserCollection,
   addPokemon,
-  checkIfPokemonsIsInUserCollection,
   removePokemon
 }

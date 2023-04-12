@@ -5,10 +5,13 @@ import { PokemonDataWithBoolean } from '../types/types.js'
 
 import * as service from '../services/pokemonsService.js'
 
-async function getPokemons(_req: Request, res: Response) {
+import { Pokemon } from '@prisma/client'
+
+async function getPokemons(_req: Request, res: Response): Promise<Response> {
   const subject: string = res.locals.subject // user id
 
-  const data = await service.getAllPokemons()
+  const data: Pokemon[] = await service.getAllPokemons()
+
   const updated_data: PokemonDataWithBoolean[] =
     await service.addPokemonBooleanProp(subject, data)
 
@@ -16,27 +19,45 @@ async function getPokemons(_req: Request, res: Response) {
   return res.status(200).send(updated_data)
 }
 
-async function postPokemonInUserCollection(_req: Request, res: Response) {
-  const id: number = res.locals.pokemon_data.id
+async function postPokemonInUserCollection(
+  req: Request,
+  res: Response
+): Promise<Response> {
   const subject: string = res.locals.subject // user id
-  const pokemon_name: string = res.locals.pokemon_data.name
+  const route: string = req.url
+  const { id } = req.params
+  const pokemonId = Number(id)
 
-  await service.addPokemon(id, subject)
+  const pokemonData: Pokemon = await service.checkIfPokemonExists(pokemonId)
+  const pokemonName: string = pokemonData.name
 
-  const data = `The ${pokemon_name} has been successfully added to your Pokedex.`
+  await service.checkIfPokemonIsInUserCollection(pokemonId, subject, route)
+
+  await service.addPokemon(pokemonId, subject)
+
+  const data = `The ${pokemonName} has been successfully added to your Pokedex.`
 
   appLog('Controller', 'Pokemon added to users collection successfully')
   return res.status(200).send(data)
 }
 
-async function removePokemonFromUserCollection(_req: Request, res: Response) {
-  const id: number = res.locals.pokemon_data.id
+async function removePokemonFromUserCollection(
+  req: Request,
+  res: Response
+): Promise<Response> {
   const subject: string = res.locals.subject // user id
-  const pokemon_name: string = res.locals.pokemon_data.name
+  const route: string = req.url
+  const { id } = req.params
+  const pokemonId = Number(id)
 
-  await service.removePokemon(id, subject)
+  const pokemonData: Pokemon = await service.checkIfPokemonExists(pokemonId)
+  const pokemonName: string = pokemonData.name
 
-  const data = `The ${pokemon_name} has been successfully removed from your Pokedex.`
+  await service.checkIfPokemonIsInUserCollection(pokemonId, subject, route)
+
+  await service.removePokemon(pokemonId, subject)
+
+  const data = `The ${pokemonName} has been successfully removed from your Pokedex.`
 
   appLog('Controller', 'Pokemon removed from users collection successfully')
   return res.status(200).send(data)
