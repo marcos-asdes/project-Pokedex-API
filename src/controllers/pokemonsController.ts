@@ -37,7 +37,10 @@ async function postPokemonInUserCollection(
 
   const data = `The ${pokemonName} has been successfully added to your Pokedex.`
 
-  appLog('Controller', 'Pokemon added to users collection successfully')
+  appLog(
+    'Controller',
+    `Pokemon ${pokemonName} added to users collection successfully`
+  )
   return res.status(200).send(data)
 }
 
@@ -59,7 +62,10 @@ async function removePokemonFromUserCollection(
 
   const data = `The ${pokemonName} has been successfully removed from your Pokedex.`
 
-  appLog('Controller', 'Pokemon removed from users collection successfully')
+  appLog(
+    'Controller',
+    `Pokemon ${pokemonName} removed from users collection successfully`
+  )
   return res.status(200).send(data)
 }
 

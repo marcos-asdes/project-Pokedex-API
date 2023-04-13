@@ -56,16 +56,18 @@ describe('Test suite: method get - route /pokemons', () => {
 describe('Test suite: method post - route /my-pokemons/:id/add', () => {
   const register = '/api/sign-up'
   const login = '/api/sign-in'
-  const randomInt = Math.floor(Math.random() * 250 + 1)
-  const addPokemon = `/api/my-pokemons/${randomInt}/add`
 
-  test('method get should return code 200', async () => {
+  test('method post should return code 200', async () => {
     const bodyLogin = { email: EMAIL, password: PASSWORD }
     const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
+    let addPokemon = '/api/my-pokemons/:id/add'
 
     await supertest(app).post(register).send(bodyRegister)
     const responseLogin = await supertest(app).post(login).send(bodyLogin)
     const token: string = regexMatch(responseLogin.text)
+
+    const randomInt = Math.floor(Math.random() * 250 + 1).toString()
+    addPokemon = addPokemon.replace(':id', randomInt)
 
     const response = await supertest(app)
       .post(addPokemon)
@@ -73,23 +75,141 @@ describe('Test suite: method post - route /my-pokemons/:id/add', () => {
 
     expect(response.status).toEqual(200)
   })
+
+  test('method post should return code 404', async () => {
+    const bodyLogin = { email: EMAIL, password: PASSWORD }
+    const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
+    let addPokemon = '/api/my-pokemons/:id/add'
+
+    await supertest(app).post(register).send(bodyRegister)
+    const responseLogin = await supertest(app).post(login).send(bodyLogin)
+    const token: string = regexMatch(responseLogin.text)
+
+    addPokemon = addPokemon.replace(':id', '0')
+
+    const response = await supertest(app)
+      .post(addPokemon)
+      .set('Authorization', `Bearer ${token}`)
+
+    expect(response.status).toEqual(404)
+  })
+
+  test('method post should return code 409', async () => {
+    const bodyLogin = { email: EMAIL, password: PASSWORD }
+    const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
+    let addPokemon = '/api/my-pokemons/:id/add'
+
+    await supertest(app).post(register).send(bodyRegister)
+    const responseLogin = await supertest(app).post(login).send(bodyLogin)
+    const token: string = regexMatch(responseLogin.text)
+
+    const randomInt = Math.floor(Math.random() * 250 + 1).toString()
+    addPokemon = addPokemon.replace(':id', randomInt)
+
+    await supertest(app)
+      .post(addPokemon)
+      .set('Authorization', `Bearer ${token}`)
+
+    const response = await supertest(app)
+      .post(addPokemon)
+      .set('Authorization', `Bearer ${token}`)
+
+    expect(response.status).toEqual(409)
+  })
 })
 
-/* describe('Test suite: method get - route /pokemons', () => {
-  // verificar se o token de usuário é válido, se não for retornar 401
-  // se o get retornar o json, o status deve ser 200
-}) */
-/* 
-describe('Test suite: method post - route /my-pokemons/:id/add', () => {
-  // verificar se o token de usuário é válido, se não for retornar 401
-  // verificar se o id do pokemon existe, se não retornar 404
-  // verificar se o pokemon já está na coleção, se não retornar 409
-  // se o post for bem sucedido, o status deve ser 200
-}) */
+describe('Test suite: method post - route /my-pokemons/:id/remove', () => {
+  const register = '/api/sign-up'
+  const login = '/api/sign-in'
 
-/*describe('Test suite: method post - route /my-pokemons/:id/remove', () => {
-  // verificar se o token de usuário é válido, se não for retornar 401
-  // verificar se o id do pokemon existe, se não retornar 404
-  // verificar se o pokemon não está na coleção, se sim retornar 409
-  // se o post for bem sucedido, o status deve ser 200
-}) */
+  test('method post should return code 200', async () => {
+    const bodyLogin = { email: EMAIL, password: PASSWORD }
+    const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
+    let addPokemon = '/api/my-pokemons/:id/add'
+    let removePokemon = '/api/my-pokemons/:id/remove'
+
+    await supertest(app).post(register).send(bodyRegister)
+    const responseLogin = await supertest(app).post(login).send(bodyLogin)
+    const token: string = regexMatch(responseLogin.text)
+
+    const randomInt = Math.floor(Math.random() * 250 + 1).toString()
+    addPokemon = addPokemon.replace(':id', randomInt)
+    removePokemon = removePokemon.replace(':id', randomInt)
+
+    await supertest(app)
+      .post(addPokemon)
+      .set('Authorization', `Bearer ${token}`)
+
+    const response = await supertest(app)
+      .post(removePokemon)
+      .set('Authorization', `Bearer ${token}`)
+
+    expect(response.status).toEqual(200)
+  })
+
+  test('method post should return code 404', async () => {
+    const bodyLogin = { email: EMAIL, password: PASSWORD }
+    const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
+    let removePokemon = '/api/my-pokemons/:id/remove'
+
+    await supertest(app).post(register).send(bodyRegister)
+    const responseLogin = await supertest(app).post(login).send(bodyLogin)
+    const token: string = regexMatch(responseLogin.text)
+
+    removePokemon = removePokemon.replace(':id', '0')
+
+    const response = await supertest(app)
+      .post(removePokemon)
+      .set('Authorization', `Bearer ${token}`)
+
+    expect(response.status).toEqual(404)
+  })
+
+  test('method post should return code 409', async () => {
+    const bodyLogin = { email: EMAIL, password: PASSWORD }
+    const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
+    let removePokemon = '/api/my-pokemons/:id/remove'
+
+    await supertest(app).post(register).send(bodyRegister)
+    const responseLogin = await supertest(app).post(login).send(bodyLogin)
+    const token: string = regexMatch(responseLogin.text)
+
+    const randomInt = Math.floor(Math.random() * 250 + 1).toString()
+    removePokemon = removePokemon.replace(':id', randomInt)
+
+    const response = await supertest(app)
+      .post(removePokemon)
+      .set('Authorization', `Bearer ${token}`)
+
+    expect(response.status).toEqual(409)
+  })
+
+  test('method post should return code 409', async () => {
+    const bodyLogin = { email: EMAIL, password: PASSWORD }
+    const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
+    let addPokemon = '/api/my-pokemons/:id/add'
+    let removePokemon = '/api/my-pokemons/:id/remove'
+
+    await supertest(app).post(register).send(bodyRegister)
+    const responseLogin = await supertest(app).post(login).send(bodyLogin)
+    const token: string = regexMatch(responseLogin.text)
+
+    const randomInt = Math.floor(Math.random() * 250 + 1).toString()
+    addPokemon = addPokemon.replace(':id', randomInt)
+    removePokemon = removePokemon.replace(':id', randomInt)
+
+    await supertest(app)
+      .post(addPokemon)
+      .set('Authorization', `Bearer ${token}`)
+
+    await supertest(app)
+      .post(removePokemon)
+      .set('Authorization', `Bearer ${token}`)
+
+    const response = await supertest(app)
+      .post(removePokemon)
+      .set('Authorization', `Bearer ${token}`)
+
+    expect(response.status).toEqual(409)
+  })
+})
