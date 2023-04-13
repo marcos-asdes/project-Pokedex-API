@@ -76,6 +76,18 @@ describe('Test suite: method post - route /my-pokemons/:id/add', () => {
     expect(response.status).toEqual(200)
   })
 
+  test('method get should return code 401', async () => {
+    let addPokemon = '/api/my-pokemons/:id/add'
+    const randomInt = Math.floor(Math.random() * 250 + 1).toString()
+    addPokemon = addPokemon.replace(':id', randomInt)
+
+    const response = await supertest(app)
+      .get(addPokemon)
+      .set('Authorization', `Bearer ${faker.datatype.uuid}`)
+
+    expect(response.status).toEqual(401)
+  })
+
   test('method post should return code 404', async () => {
     const bodyLogin = { email: EMAIL, password: PASSWORD }
     const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
@@ -145,6 +157,18 @@ describe('Test suite: method post - route /my-pokemons/:id/remove', () => {
       .set('Authorization', `Bearer ${token}`)
 
     expect(response.status).toEqual(200)
+  })
+
+  test('method get should return code 401', async () => {
+    let removePokemon = '/api/my-pokemons/:id/remove'
+    const randomInt = Math.floor(Math.random() * 250 + 1).toString()
+    removePokemon = removePokemon.replace(':id', randomInt)
+
+    const response = await supertest(app)
+      .get(removePokemon)
+      .set('Authorization', `Bearer ${faker.datatype.uuid}`)
+
+    expect(response.status).toEqual(401)
   })
 
   test('method post should return code 404', async () => {
