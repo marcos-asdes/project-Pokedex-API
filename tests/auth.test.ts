@@ -1,7 +1,7 @@
 import supertest from 'supertest'
 import { faker } from '@faker-js/faker'
 
-import app from '../src/app'
+import app from '../src/app.js'
 import client from '../src/config/database.js'
 
 afterAll(async () => {
@@ -90,22 +90,3 @@ describe('Test suite: method post - route /sign-in', () => {
     expect(response.status).toEqual(401)
   })
 })
-
-/* describe('Test suite: method get - route /pokemons', () => {
-  // verificar se o token de usuário é válido, se não for retornar 401
-  // se o get retornar o json, o status deve ser 200
-}) */
-/* 
-describe('Test suite: method post - route /my-pokemons/:id/add', () => {
-  // verificar se o token de usuário é válido, se não for retornar 401
-  // verificar se o id do pokemon existe, se não retornar 404
-  // verificar se o pokemon já está na coleção, se não retornar 409
-  // se o post for bem sucedido, o status deve ser 200
-}) */
-
-/*describe('Test suite: method post - route /my-pokemons/:id/remove', () => {
-  // verificar se o token de usuário é válido, se não for retornar 401
-  // verificar se o id do pokemon existe, se não retornar 404
-  // verificar se o pokemon não está na coleção, se sim retornar 409
-  // se o post for bem sucedido, o status deve ser 200
-}) */

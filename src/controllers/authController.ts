@@ -24,11 +24,11 @@ async function registerUser(_req: Request, res: Response): Promise<Response> {
 async function loginUser(req: Request, res: Response): Promise<Response> {
   const { email, password } = res.locals.body
 
-  const user_data: User = await service.checkIfEmailIsValid(email)
+  const userData: User = await service.checkIfEmailIsValid(email)
 
-  service.checkIfPasswordIsValid(password, user_data?.password)
+  service.checkIfPasswordIsValid(password, userData.password)
 
-  const token: string = await service.sendTokenToHeader(user_data?.id, req)
+  const token: string = await service.sendTokenToHeader(userData.id, req)
 
   const data: string = `User ${email} has successfully logged in. \n\n User token: ${token}`
 
