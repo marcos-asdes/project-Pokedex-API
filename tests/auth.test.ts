@@ -14,12 +14,12 @@ const PASSWORD = faker.internet.password()
 
 // Integration tests
 describe('Test suite: method post - route /sign-up', () => {
-  const route = '/api/sign-up'
+  const register = '/api/sign-up'
 
-  test('method post should return code 201', async () => {
+  test('method post should return code 201 - success', async () => {
     const body = { email: EMAIL, password: PASSWORD, confirmPassword: PASSWORD }
 
-    const response = await supertest(app).post(route).send(body)
+    const response = await supertest(app).post(register).send(body)
 
     expect(response.status).toEqual(201)
   })
@@ -31,7 +31,7 @@ describe('Test suite: method post - route /sign-up', () => {
       confirmPassword: PASSWORD
     }
 
-    const response = await supertest(app).post(route).send(body)
+    const response = await supertest(app).post(register).send(body)
 
     expect(response.status).toEqual(400)
   })
@@ -39,8 +39,8 @@ describe('Test suite: method post - route /sign-up', () => {
   test('method post should return code 409 - email already registered', async () => {
     const body = { email: EMAIL, password: PASSWORD, confirmPassword: PASSWORD }
 
-    await supertest(app).post(route).send(body)
-    const response = await supertest(app).post(route).send(body)
+    await supertest(app).post(register).send(body)
+    const response = await supertest(app).post(register).send(body)
 
     expect(response.status).toEqual(409)
   })
@@ -50,7 +50,7 @@ describe('Test suite: method post - route /sign-in', () => {
   const register = '/api/sign-up'
   const login = '/api/sign-in'
 
-  test('method post should return code 200', async () => {
+  test('method post should return code 200 - success', async () => {
     const bodyLogin = { email: EMAIL, password: PASSWORD }
     const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
     await supertest(app).post(register).send(bodyRegister)

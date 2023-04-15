@@ -13,7 +13,7 @@ const EMAIL = faker.internet.email()
 const PASSWORD = faker.internet.password()
 
 // Factory
-function regexMatch(str: string) {
+function regexExtractJwtToken(str: string) {
   const regex: RegExp = /\b[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\.[a-zA-Z0-9_-]+\b/g
   const match = str.match(regex)
   if (match) {
@@ -29,13 +29,13 @@ describe('Test suite: method get - route /pokemons', () => {
   const login = '/api/sign-in'
   const getPokemons = '/api/pokemons'
 
-  test('method get should return code 200', async () => {
+  test('method get should return code 200 - success', async () => {
     const bodyLogin = { email: EMAIL, password: PASSWORD }
     const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
 
     await supertest(app).post(register).send(bodyRegister)
     const responseLogin = await supertest(app).post(login).send(bodyLogin)
-    const token: string = regexMatch(responseLogin.text)
+    const token: string = regexExtractJwtToken(responseLogin.text)
 
     const response = await supertest(app)
       .get(getPokemons)
@@ -44,7 +44,7 @@ describe('Test suite: method get - route /pokemons', () => {
     expect(response.status).toEqual(200)
   })
 
-  test('method get should return code 401', async () => {
+  test('method get should return code 401 - invalid token', async () => {
     const response = await supertest(app)
       .get(getPokemons)
       .set('Authorization', `Bearer ${faker.datatype.uuid}`)
@@ -57,14 +57,14 @@ describe('Test suite: method post - route /my-pokemons/:id/add', () => {
   const register = '/api/sign-up'
   const login = '/api/sign-in'
 
-  test('method post should return code 200', async () => {
+  test('method post should return code 200 - success', async () => {
     const bodyLogin = { email: EMAIL, password: PASSWORD }
     const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
     let addPokemon = '/api/my-pokemons/:id/add'
 
     await supertest(app).post(register).send(bodyRegister)
     const responseLogin = await supertest(app).post(login).send(bodyLogin)
-    const token: string = regexMatch(responseLogin.text)
+    const token: string = regexExtractJwtToken(responseLogin.text)
 
     const randomInt = Math.floor(Math.random() * 250 + 1).toString()
     addPokemon = addPokemon.replace(':id', randomInt)
@@ -76,7 +76,7 @@ describe('Test suite: method post - route /my-pokemons/:id/add', () => {
     expect(response.status).toEqual(200)
   })
 
-  test('method get should return code 401', async () => {
+  test('method post should return code 401 - invalid token', async () => {
     let addPokemon = '/api/my-pokemons/:id/add'
     const randomInt = Math.floor(Math.random() * 250 + 1).toString()
     addPokemon = addPokemon.replace(':id', randomInt)
@@ -88,14 +88,14 @@ describe('Test suite: method post - route /my-pokemons/:id/add', () => {
     expect(response.status).toEqual(401)
   })
 
-  test('method post should return code 404', async () => {
+  test('method post should return code 404 - pokemon does not exist in database', async () => {
     const bodyLogin = { email: EMAIL, password: PASSWORD }
     const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
     let addPokemon = '/api/my-pokemons/:id/add'
 
     await supertest(app).post(register).send(bodyRegister)
     const responseLogin = await supertest(app).post(login).send(bodyLogin)
-    const token: string = regexMatch(responseLogin.text)
+    const token: string = regexExtractJwtToken(responseLogin.text)
 
     addPokemon = addPokemon.replace(':id', '0')
 
@@ -106,14 +106,14 @@ describe('Test suite: method post - route /my-pokemons/:id/add', () => {
     expect(response.status).toEqual(404)
   })
 
-  test('method post should return code 409', async () => {
+  test('method post should return code 409 - pokemon already exists in user collection', async () => {
     const bodyLogin = { email: EMAIL, password: PASSWORD }
     const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
     let addPokemon = '/api/my-pokemons/:id/add'
 
     await supertest(app).post(register).send(bodyRegister)
     const responseLogin = await supertest(app).post(login).send(bodyLogin)
-    const token: string = regexMatch(responseLogin.text)
+    const token: string = regexExtractJwtToken(responseLogin.text)
 
     const randomInt = Math.floor(Math.random() * 250 + 1).toString()
     addPokemon = addPokemon.replace(':id', randomInt)
@@ -134,7 +134,7 @@ describe('Test suite: method post - route /my-pokemons/:id/remove', () => {
   const register = '/api/sign-up'
   const login = '/api/sign-in'
 
-  test('method post should return code 200', async () => {
+  test('method post should return code 200 - success', async () => {
     const bodyLogin = { email: EMAIL, password: PASSWORD }
     const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
     let addPokemon = '/api/my-pokemons/:id/add'
@@ -142,7 +142,7 @@ describe('Test suite: method post - route /my-pokemons/:id/remove', () => {
 
     await supertest(app).post(register).send(bodyRegister)
     const responseLogin = await supertest(app).post(login).send(bodyLogin)
-    const token: string = regexMatch(responseLogin.text)
+    const token: string = regexExtractJwtToken(responseLogin.text)
 
     const randomInt = Math.floor(Math.random() * 250 + 1).toString()
     addPokemon = addPokemon.replace(':id', randomInt)
@@ -159,7 +159,7 @@ describe('Test suite: method post - route /my-pokemons/:id/remove', () => {
     expect(response.status).toEqual(200)
   })
 
-  test('method get should return code 401', async () => {
+  test('method post should return code 401 - invalid token', async () => {
     let removePokemon = '/api/my-pokemons/:id/remove'
     const randomInt = Math.floor(Math.random() * 250 + 1).toString()
     removePokemon = removePokemon.replace(':id', randomInt)
@@ -171,14 +171,14 @@ describe('Test suite: method post - route /my-pokemons/:id/remove', () => {
     expect(response.status).toEqual(401)
   })
 
-  test('method post should return code 404', async () => {
+  test('method post should return code 404 - pokemon does not exist in database', async () => {
     const bodyLogin = { email: EMAIL, password: PASSWORD }
     const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
     let removePokemon = '/api/my-pokemons/:id/remove'
 
     await supertest(app).post(register).send(bodyRegister)
     const responseLogin = await supertest(app).post(login).send(bodyLogin)
-    const token: string = regexMatch(responseLogin.text)
+    const token: string = regexExtractJwtToken(responseLogin.text)
 
     removePokemon = removePokemon.replace(':id', '0')
 
@@ -189,14 +189,14 @@ describe('Test suite: method post - route /my-pokemons/:id/remove', () => {
     expect(response.status).toEqual(404)
   })
 
-  test('method post should return code 409', async () => {
+  test('method post should return code 409 - pokemon does not exists in user collection', async () => {
     const bodyLogin = { email: EMAIL, password: PASSWORD }
     const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
     let removePokemon = '/api/my-pokemons/:id/remove'
 
     await supertest(app).post(register).send(bodyRegister)
     const responseLogin = await supertest(app).post(login).send(bodyLogin)
-    const token: string = regexMatch(responseLogin.text)
+    const token: string = regexExtractJwtToken(responseLogin.text)
 
     const randomInt = Math.floor(Math.random() * 250 + 1).toString()
     removePokemon = removePokemon.replace(':id', randomInt)
@@ -208,7 +208,7 @@ describe('Test suite: method post - route /my-pokemons/:id/remove', () => {
     expect(response.status).toEqual(409)
   })
 
-  test('method post should return code 409', async () => {
+  test('method post should return code 409 - pokemon already removed from user collection', async () => {
     const bodyLogin = { email: EMAIL, password: PASSWORD }
     const bodyRegister = { ...bodyLogin, confirmPassword: PASSWORD }
     let addPokemon = '/api/my-pokemons/:id/add'
@@ -216,7 +216,7 @@ describe('Test suite: method post - route /my-pokemons/:id/remove', () => {
 
     await supertest(app).post(register).send(bodyRegister)
     const responseLogin = await supertest(app).post(login).send(bodyLogin)
-    const token: string = regexMatch(responseLogin.text)
+    const token: string = regexExtractJwtToken(responseLogin.text)
 
     const randomInt = Math.floor(Math.random() * 250 + 1).toString()
     addPokemon = addPokemon.replace(':id', randomInt)
