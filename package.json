@@ -21,8 +21,8 @@
     "check-updates": "npx npm-check-updates -u",
     "eslint": "npm init @eslint/config",
     "prepare": "husky install",
-    "test": "dotenv -e .env.test.local jest -i",
-    "test:int": "dotenv -e .env.test.local jest --projects ./tests --runInBand --clearCache -i",
+    "test:unit": "jest",
+    "test:int": "jest --runInBand --clearCache -i",
     "heroku:logs": "heroku logs --tail"
   },
   "repository": {

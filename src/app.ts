@@ -8,7 +8,7 @@ import router from './routes/index.js'
 import { apiLimiter } from './middlewares/rateLimitMiddleware.js'
 import errorHandler from './events/appError.js'
 
-dotenv.config()
+dotenv.config({ path: '.env' })
 
 const app = express()
 app.use(cors())

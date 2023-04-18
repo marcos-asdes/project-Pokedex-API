@@ -54,8 +54,6 @@ function generateToken(id: string): string {
   }
 }
 
-// export functions
-
 // sign up services
 async function checkIfEmailIsAlreadyRegistered(email: string): Promise<void> {
   const data: User | null = await repository.findUserByEmail(email)
@@ -119,6 +117,9 @@ async function sendTokenToHeader(id: string, req: Request): Promise<string> {
 }
 
 export {
+  hashPassword,
+  decryptPassword,
+  generateToken,
   checkIfEmailIsAlreadyRegistered,
   registerUserInDatabase,
   checkIfEmailIsValid,
